@@ -1,0 +1,797 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-comment">{-|
+Module      : Main
+Description : Implementa&#231;&#227;o de um jogo de Tetris utilizando a biblioteca Gloss.
+Copyright   : B&#225;rbara Dias de Sena, 2020
+License     : GPL-3
+Maintainer  : babi.dias.sena@hotmail.com
+Stability   : experimental
+Portability : GHC
+
+O intuito do projeto &#233; fazer um jogo de Tetris em Haskell utilizando a biblioteca Gloss.
+-}</span><span>
+</span><span id="line-12"></span><span>
+</span><span id="line-13"></span><span class="hs-pragma">{-# LANGUAGE TupleSections #-}</span><span>
+</span><span id="line-14"></span><span>
+</span><span id="line-15"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Main</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-16"></span><span>
+</span><span id="line-17"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Graphics.Gloss</span></span><span>
+</span><span id="line-18"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Graphics.Gloss.Interface.Pure.Game</span></span><span>
+</span><span id="line-19"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">System.Random</span></span><span>
+</span><span id="line-20"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="Database.html"><span class="hs-identifier">Database</span></a></span><span>
+</span><span id="line-21"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="Desenhos.html"><span class="hs-identifier">Desenhos</span></a></span><span>
+</span><span id="line-22"></span><span>
+</span><span id="line-23"></span><span>
+</span><span id="line-24"></span><span class="hs-comment">-- | Lista de Tetramin&#243;s gerada aleat&#243;riamente.</span><span>
+</span><span id="line-25"></span><span class="annot"><a href="Main.html#listaPecas"><span class="hs-identifier hs-type">listaPecas</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Database.html#Tetramino"><span class="hs-identifier hs-type">Tetramino</span></a></span><span class="hs-special">]</span><span>
+</span><span id="line-26"></span><span id="listaPecas"><span class="annot"><span class="annottext">listaPecas :: IO [Tetramino]
+</span><a href="Main.html#listaPecas"><span class="hs-identifier hs-var hs-var">listaPecas</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">(Int -&gt; Tetramino) -&gt; [Int] -&gt; [Tetramino]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">\</span><span id="local-6989586621679052418"><span class="annot"><span class="annottext">x :: Int
+</span><a href="#local-6989586621679052418"><span class="hs-identifier hs-var">x</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Tetramino
+</span><a href="Database.html#I"><span class="hs-identifier hs-var">I</span></a></span><span> </span><span class="hs-glyph">..</span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="Database.html#S"><span class="hs-identifier hs-var">S</span></a></span><span class="hs-special">]</span><span> </span><span class="annot"><span class="annottext">[Tetramino] -&gt; Int -&gt; Tetramino
+forall a. [a] -&gt; Int -&gt; a
+</span><span class="hs-operator hs-var">!!</span></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052418"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">([Int] -&gt; [Tetramino]) -&gt; IO [Int] -&gt; IO [Tetramino]
+forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
+</span><span class="hs-operator hs-var">&lt;$&gt;</span></span><span> </span><span class="annot"><span class="annottext">(StdGen -&gt; [Int]) -&gt; IO StdGen -&gt; IO [Int]
+forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
+</span><span class="hs-identifier hs-var">fmap</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(Int, Int) -&gt; StdGen -&gt; [Int]
+forall a g. (Random a, RandomGen g) =&gt; (a, a) -&gt; g -&gt; [a]
+</span><span class="hs-identifier hs-var">randomRs</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-number">0</span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-number">6</span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">IO StdGen
+</span><span class="hs-identifier hs-var">getStdGen</span></span><span>
+</span><span id="line-27"></span><span>
+</span><span id="line-28"></span><span>
+</span><span id="line-29"></span><span class="hs-comment">-- | Mundo inicial do jogo que cont&#233;m apenas a primeira pe&#231;a.</span><span>
+</span><span id="line-30"></span><span class="annot"><a href="Main.html#mundoInicial"><span class="hs-identifier hs-type">mundoInicial</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Database.html#Tetramino"><span class="hs-identifier hs-type">Tetramino</span></a></span><span class="hs-special">]</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-type">Mundo</span></a></span><span>
+</span><span id="line-31"></span><span id="mundoInicial"><span class="annot"><span class="annottext">mundoInicial :: [Tetramino] -&gt; Mundo
+</span><a href="Main.html#mundoInicial"><span class="hs-identifier hs-var hs-var">mundoInicial</span></a></span></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span>     </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Mundo
+forall a. HasCallStack =&gt; a
+</span><span class="hs-identifier hs-var">undefined</span></span><span>
+</span><span id="line-32"></span><span class="annot"><a href="Main.html#mundoInicial"><span class="hs-identifier hs-var">mundoInicial</span></a></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679052409"><span class="annot"><span class="annottext">t :: Tetramino
+</span><a href="#local-6989586621679052409"><span class="hs-identifier hs-var">t</span></a></span></span><span class="annot"><span class="hs-glyph hs-type">:</span></span><span id="local-6989586621679052408"><span class="annot"><span class="annottext">ts :: [Tetramino]
+</span><a href="#local-6989586621679052408"><span class="hs-identifier hs-var">ts</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+-&gt; Peca -&gt; [Tetramino] -&gt; Int -&gt; Int -&gt; Int -&gt; Bool -&gt; Mundo
+</span><a href="Database.html#Mundo"><span class="hs-identifier hs-var">Mundo</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(Coord -&gt; (Coord, Color)) -&gt; [Coord] -&gt; [(Coord, Color)]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-special">,</span></span><span> </span><span class="annot"><span class="annottext">Peca -&gt; Color
+</span><a href="Database.html#cor"><span class="hs-identifier hs-var hs-var">cor</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052405"><span class="hs-identifier hs-var">p</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Peca -&gt; [Coord]
+</span><a href="Database.html#blocosPeca"><span class="hs-identifier hs-var hs-var">blocosPeca</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052405"><span class="hs-identifier hs-var">p</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052405"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">[Tetramino]
+</span><a href="#local-6989586621679052408"><span class="hs-identifier hs-var">ts</span></a></span><span> </span><span class="annot"><span class="hs-number">0</span></span><span> </span><span class="annot"><span class="hs-number">3</span></span><span> </span><span class="annot"><span class="hs-number">0</span></span><span> </span><span class="annot"><span class="annottext">Bool
+</span><span class="hs-identifier hs-var">False</span></span><span>
+</span><span id="line-33"></span><span>  </span><span class="hs-keyword">where</span><span> </span><span id="local-6989586621679052405"><span class="annot"><span class="annottext">p :: Peca
+</span><a href="#local-6989586621679052405"><span class="hs-identifier hs-var hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Peca
+</span><a href="Database.html#criaPeca"><span class="hs-identifier hs-var">criaPeca</span></a></span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="#local-6989586621679052409"><span class="hs-identifier hs-var">t</span></a></span><span>
+</span><span id="line-34"></span><span>
+</span><span id="line-35"></span><span>
+</span><span id="line-36"></span><span class="hs-comment">-- | Se poss&#237;vel, movimenta a pe&#231;a de acordo com a tecla pressionada, </span><span>
+</span><span id="line-37"></span><span class="hs-comment">-- atualizando os blocos do mundo e da pe&#231;a ativa.</span><span>
+</span><span id="line-38"></span><span class="annot"><a href="Main.html#joga"><span class="hs-identifier hs-type">joga</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Event</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-type">Mundo</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-type">Mundo</span></a></span><span>
+</span><span id="line-39"></span><span id="joga"><span class="annot"><span class="annottext">joga :: Event -&gt; Mundo -&gt; Mundo
+</span><a href="Main.html#joga"><span class="hs-identifier hs-var hs-var">joga</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">EventKey</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">SpecialKey</span></span><span> </span><span id="local-6989586621679052399"><span class="annot"><span class="annottext">k :: SpecialKey
+</span><a href="#local-6989586621679052399"><span class="hs-identifier hs-var">k</span></a></span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Down</span></span><span> </span><span class="hs-identifier">_</span><span> </span><span class="hs-identifier">_</span><span class="hs-special">)</span><span> </span><span id="local-6989586621679052397"><span class="annot"><span class="annottext">m :: Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-40"></span><span>  </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Bool
+</span><a href="Database.html#gameOver"><span class="hs-identifier hs-var hs-var">gameOver</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span>                                           </span><span class="hs-comment">-- Verifica se o jogo acabou. </span><span>
+</span><span id="line-41"></span><span>     </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span>                                               </span><span class="hs-comment">-- Se sim, n&#227;o faz nada.</span><span>
+</span><span id="line-42"></span><span>     </span><span class="hs-keyword">else</span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">blocosPintados :: [(Coord, Color)]
+</span><a href="Database.html#blocosPintados"><span class="hs-identifier hs-var">blocosPintados</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+</span><a href="#local-6989586621679052394"><span class="hs-identifier hs-var">blocos</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">pecaAtual :: Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var">pecaAtual</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052392"><span class="hs-identifier hs-var">novaP</span></a></span><span class="hs-special">}</span><span>  </span><span class="hs-comment">-- Se n&#227;o, realiza o movimento.</span><span>
+</span><span id="line-43"></span><span>      </span><span class="hs-keyword">where</span><span>
+</span><span id="line-44"></span><span>        </span><span id="local-6989586621679052392"><span class="annot"><span class="annottext">novaP :: Peca
+</span><a href="#local-6989586621679052392"><span class="hs-identifier hs-var hs-var">novaP</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">SpecialKey
+</span><a href="#local-6989586621679052399"><span class="hs-identifier hs-var">k</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><span id="line-45"></span><span>                 </span><span class="annot"><span class="hs-identifier hs-type">KeyRight</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Direcao -&gt; Bool
+</span><a href="Main.html#podeMover"><span class="hs-identifier hs-var">podeMover</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Dir"><span class="hs-identifier hs-var">Dir</span></a></span><span>       </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="annottext">Direcao -&gt; Peca -&gt; Peca
+</span><a href="Main.html#move"><span class="hs-identifier hs-var">move</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Dir"><span class="hs-identifier hs-var">Dir</span></a></span><span>       </span><span class="annot"><span class="annottext">(Peca -&gt; Peca) -&gt; Peca -&gt; Peca
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="hs-keyword">else</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><span id="line-46"></span><span>                 </span><span class="annot"><span class="hs-identifier hs-type">KeyLeft</span></span><span>  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Direcao -&gt; Bool
+</span><a href="Main.html#podeMover"><span class="hs-identifier hs-var">podeMover</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Esq"><span class="hs-identifier hs-var">Esq</span></a></span><span>       </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="annottext">Direcao -&gt; Peca -&gt; Peca
+</span><a href="Main.html#move"><span class="hs-identifier hs-var">move</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Esq"><span class="hs-identifier hs-var">Esq</span></a></span><span>       </span><span class="annot"><span class="annottext">(Peca -&gt; Peca) -&gt; Peca -&gt; Peca
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="hs-keyword">else</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><span id="line-47"></span><span>                 </span><span class="annot"><span class="hs-identifier hs-type">KeyDown</span></span><span>  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Direcao -&gt; Bool
+</span><a href="Main.html#podeMover"><span class="hs-identifier hs-var">podeMover</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Baixo"><span class="hs-identifier hs-var">Baixo</span></a></span><span>     </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="annottext">Direcao -&gt; Peca -&gt; Peca
+</span><a href="Main.html#move"><span class="hs-identifier hs-var">move</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Baixo"><span class="hs-identifier hs-var">Baixo</span></a></span><span>     </span><span class="annot"><span class="annottext">(Peca -&gt; Peca) -&gt; Peca -&gt; Peca
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="hs-keyword">else</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><span id="line-48"></span><span>                 </span><span class="annot"><span class="hs-identifier hs-type">KeyUp</span></span><span>    </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Direcao -&gt; Bool
+</span><a href="Main.html#podeMover"><span class="hs-identifier hs-var">podeMover</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Rotaciona"><span class="hs-identifier hs-var">Rotaciona</span></a></span><span> </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="annottext">Direcao -&gt; Peca -&gt; Peca
+</span><a href="Main.html#move"><span class="hs-identifier hs-var">move</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Rotaciona"><span class="hs-identifier hs-var">Rotaciona</span></a></span><span> </span><span class="annot"><span class="annottext">(Peca -&gt; Peca) -&gt; Peca -&gt; Peca
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="hs-keyword">else</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><span id="line-49"></span><span>                 </span><span class="annot"><span class="hs-identifier hs-type">KeySpace</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Main.html#moveFundo"><span class="hs-identifier hs-var">moveFundo</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><span id="line-50"></span><span>                 </span><span class="hs-identifier">_</span><span>        </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><span id="line-51"></span><span>        </span><span class="hs-comment">-- Blocos do mundo sem a pe&#231;a atual acrescido da pe&#231;a transladada.</span><span>
+</span><span id="line-52"></span><span>        </span><span id="local-6989586621679052394"><span class="annot"><span class="annottext">blocos :: [(Coord, Color)]
+</span><a href="#local-6989586621679052394"><span class="hs-identifier hs-var hs-var">blocos</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">((Coord, Color) -&gt; Bool) -&gt; [(Coord, Color)] -&gt; [(Coord, Color)]
+forall a. (a -&gt; Bool) -&gt; [a] -&gt; [a]
+</span><span class="hs-identifier hs-var">filter</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">\</span><span class="hs-special">(</span><span id="local-6989586621679052379"><span class="annot"><span class="annottext">x :: Coord
+</span><a href="#local-6989586621679052379"><span class="hs-identifier hs-var">x</span></a></span></span><span class="hs-special">,</span><span> </span><span class="hs-identifier">_</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052379"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">Coord -&gt; [Coord] -&gt; Bool
+forall (t :: * -&gt; *) a. (Foldable t, Eq a) =&gt; a -&gt; t a -&gt; Bool
+</span><span class="hs-operator hs-var">`notElem`</span></span><span> </span><span class="annot"><span class="annottext">Peca -&gt; [Coord]
+</span><a href="Database.html#blocosPeca"><span class="hs-identifier hs-var hs-var">blocosPeca</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Mundo -&gt; [(Coord, Color)]
+</span><a href="Database.html#blocosPintados"><span class="hs-identifier hs-var hs-var">blocosPintados</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052397"><span class="hs-identifier hs-var">m</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-53"></span><span>              </span><span class="annot"><span class="annottext">[(Coord, Color)] -&gt; [(Coord, Color)] -&gt; [(Coord, Color)]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="annot"><span class="annottext">(Coord -&gt; (Coord, Color)) -&gt; [Coord] -&gt; [(Coord, Color)]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-special">,</span></span><span> </span><span class="annot"><span class="annottext">Peca -&gt; Color
+</span><a href="Database.html#cor"><span class="hs-identifier hs-var hs-var">cor</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052392"><span class="hs-identifier hs-var">novaP</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Peca -&gt; [Coord]
+</span><a href="Database.html#blocosPeca"><span class="hs-identifier hs-var hs-var">blocosPeca</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052392"><span class="hs-identifier hs-var">novaP</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-54"></span><span>
+</span><span id="line-55"></span><span class="annot"><a href="Main.html#joga"><span class="hs-identifier hs-var">joga</span></a></span><span> </span><span class="hs-identifier">_</span><span> </span><span id="local-6989586621679052377"><span class="annot"><span class="annottext">m :: Mundo
+</span><a href="#local-6989586621679052377"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052377"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><span id="line-56"></span><span>
+</span><span id="line-57"></span><span>
+</span><span id="line-58"></span><span>
+</span><span id="line-59"></span><span class="hs-comment">-- | Verifica se um movimento pode ser feito dado um mundo e uma dire&#231;&#227;o.</span><span>
+</span><span id="line-60"></span><span class="annot"><a href="Main.html#podeMover"><span class="hs-identifier hs-type">podeMover</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-type">Mundo</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Database.html#Direcao"><span class="hs-identifier hs-type">Direcao</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Bool</span></span><span>
+</span><span id="line-61"></span><span id="podeMover"><span class="annot"><span class="annottext">podeMover :: Mundo -&gt; Direcao -&gt; Bool
+</span><a href="Main.html#podeMover"><span class="hs-identifier hs-var hs-var">podeMover</span></a></span></span><span> </span><span id="local-6989586621679052376"><span class="annot"><span class="annottext">m :: Mundo
+</span><a href="#local-6989586621679052376"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span id="local-6989586621679052375"><span class="annot"><span class="annottext">d :: Direcao
+</span><a href="#local-6989586621679052375"><span class="hs-identifier hs-var">d</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Bool -&gt; Bool
+</span><span class="hs-identifier hs-var">not</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(Coord -&gt; Bool) -&gt; [Coord] -&gt; Bool
+forall (t :: * -&gt; *) a. Foldable t =&gt; (a -&gt; Bool) -&gt; t a -&gt; Bool
+</span><span class="hs-identifier hs-var">any</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Coord -&gt; [Coord] -&gt; Bool
+forall (t :: * -&gt; *) a. (Foldable t, Eq a) =&gt; a -&gt; t a -&gt; Bool
+</span><span class="hs-operator hs-var">`elem`</span></span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052371"><span class="hs-identifier hs-var">bsM</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052370"><span class="hs-identifier hs-var">bsP</span></a></span><span>                               </span><span class="hs-comment">-- Verifica se a pe&#231;a vai colidir com um bloco</span><span>
+</span><span id="line-62"></span><span>                  </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><span class="hs-operator hs-var">||</span></span><span> </span><span class="annot"><span class="annottext">(Coord -&gt; Bool) -&gt; [Coord] -&gt; Bool
+forall (t :: * -&gt; *) a. Foldable t =&gt; (a -&gt; Bool) -&gt; t a -&gt; Bool
+</span><span class="hs-identifier hs-var">any</span></span><span> </span><span class="hs-special">(</span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Bool
+forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">==</span></span><span> </span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">280</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Float -&gt; Bool) -&gt; (Coord -&gt; Float) -&gt; Coord -&gt; Bool
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">Coord -&gt; Float
+forall a b. (a, b) -&gt; b
+</span><span class="hs-identifier hs-var">snd</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Peca -&gt; [Coord]
+</span><a href="Database.html#blocosPeca"><span class="hs-identifier hs-var hs-var">blocosPeca</span></a></span><span> </span><span class="annot"><span class="annottext">(Peca -&gt; [Coord]) -&gt; Peca -&gt; [Coord]
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052376"><span class="hs-identifier hs-var">m</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>  </span><span class="hs-comment">-- do mundo ou se a pe&#231;a chegou ao fundo.</span><span>
+</span><span id="line-63"></span><span>  </span><span class="hs-keyword">where</span><span>
+</span><span id="line-64"></span><span>    </span><span id="local-6989586621679052370"><span class="annot"><span class="annottext">bsP :: [Coord]
+</span><a href="#local-6989586621679052370"><span class="hs-identifier hs-var hs-var">bsP</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Peca -&gt; [Coord]
+</span><a href="Database.html#blocosPeca"><span class="hs-identifier hs-var hs-var">blocosPeca</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Direcao -&gt; Peca -&gt; Peca
+</span><a href="Main.html#move"><span class="hs-identifier hs-var">move</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="#local-6989586621679052375"><span class="hs-identifier hs-var">d</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052376"><span class="hs-identifier hs-var">m</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>                                        </span><span class="hs-comment">-- Blocos da pe&#231;a atual depois de movida.</span><span>
+</span><span id="line-65"></span><span>    </span><span id="local-6989586621679052371"><span class="annot"><span class="annottext">bsM :: [Coord]
+</span><a href="#local-6989586621679052371"><span class="hs-identifier hs-var hs-var">bsM</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">(Coord -&gt; Bool) -&gt; [Coord] -&gt; [Coord]
+forall a. (a -&gt; Bool) -&gt; [a] -&gt; [a]
+</span><span class="hs-identifier hs-var">filter</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Coord -&gt; [Coord] -&gt; Bool
+forall (t :: * -&gt; *) a. (Foldable t, Eq a) =&gt; a -&gt; t a -&gt; Bool
+</span><span class="hs-operator hs-var">`notElem`</span></span><span> </span><span class="annot"><span class="annottext">Peca -&gt; [Coord]
+</span><a href="Database.html#blocosPeca"><span class="hs-identifier hs-var hs-var">blocosPeca</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052376"><span class="hs-identifier hs-var">m</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">((Coord, Color) -&gt; Coord) -&gt; [(Coord, Color)] -&gt; [Coord]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="annot"><span class="annottext">(Coord, Color) -&gt; Coord
+forall a b. (a, b) -&gt; a
+</span><span class="hs-identifier hs-var">fst</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Mundo -&gt; [(Coord, Color)]
+</span><a href="Database.html#blocosPintados"><span class="hs-identifier hs-var hs-var">blocosPintados</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052376"><span class="hs-identifier hs-var">m</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-comment">-- Blocos do mundo sem a pe&#231;a atual.</span><span>
+</span><span id="line-66"></span><span>
+</span><span id="line-67"></span><span>
+</span><span id="line-68"></span><span>
+</span><span id="line-69"></span><span class="hs-comment">-- | Move uma pe&#231;a para uma dire&#231;&#227;o dada, atualizando os blocos da mesma.</span><span>
+</span><span id="line-70"></span><span class="annot"><a href="Main.html#move"><span class="hs-identifier hs-type">move</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Database.html#Direcao"><span class="hs-identifier hs-type">Direcao</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Database.html#Peca"><span class="hs-identifier hs-type">Peca</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Database.html#Peca"><span class="hs-identifier hs-type">Peca</span></a></span><span>
+</span><span id="line-71"></span><span id="move"><span class="annot"><span class="annottext">move :: Direcao -&gt; Peca -&gt; Peca
+</span><a href="Main.html#move"><span class="hs-identifier hs-var hs-var">move</span></a></span></span><span> </span><span id="local-6989586621679052367"><span class="annot"><span class="annottext">d :: Direcao
+</span><a href="#local-6989586621679052367"><span class="hs-identifier hs-var">d</span></a></span></span><span> </span><span id="local-6989586621679052366"><span class="annot"><span class="annottext">p :: Peca
+</span><a href="#local-6989586621679052366"><span class="hs-identifier hs-var">p</span></a></span></span><span class="hs-glyph">@</span><span class="hs-special">(</span><span class="annot"><a href="Database.html#Peca"><span class="hs-identifier hs-type">Peca</span></a></span><span> </span><span id="local-6989586621679052364"><span class="annot"><span class="annottext">t :: Tetramino
+</span><a href="#local-6989586621679052364"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span id="local-6989586621679052363"><span class="annot"><span class="annottext">c :: Color
+</span><a href="#local-6989586621679052363"><span class="hs-identifier hs-var">c</span></a></span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679052362"><span class="annot"><span class="annottext">x :: Float
+</span><a href="#local-6989586621679052362"><span class="hs-identifier hs-var">x</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679052361"><span class="annot"><span class="annottext">y :: Float
+</span><a href="#local-6989586621679052361"><span class="hs-identifier hs-var">y</span></a></span></span><span class="hs-special">)</span><span> </span><span id="local-6989586621679052360"><span class="annot"><span class="annottext">bs :: [Coord]
+</span><a href="#local-6989586621679052360"><span class="hs-identifier hs-var">bs</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-72"></span><span>  </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="#local-6989586621679052367"><span class="hs-identifier hs-var">d</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><span id="line-73"></span><span>    </span><span class="annot"><a href="Database.html#Dir"><span class="hs-identifier hs-type">Dir</span></a></span><span>   </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">(Coord -&gt; Bool) -&gt; [Coord] -&gt; Bool
+forall (t :: * -&gt; *) a. Foldable t =&gt; (a -&gt; Bool) -&gt; t a -&gt; Bool
+</span><span class="hs-identifier hs-var">any</span></span><span> </span><span class="hs-special">(</span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Bool
+forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">==</span></span><span>  </span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#limiteX"><span class="hs-identifier hs-var">limiteX</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Float -&gt; Bool) -&gt; (Coord -&gt; Float) -&gt; Coord -&gt; Bool
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">Coord -&gt; Float
+forall a b. (a, b) -&gt; a
+</span><span class="hs-identifier hs-var">fst</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052360"><span class="hs-identifier hs-var">bs</span></a></span><span> </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052366"><span class="hs-identifier hs-var">p</span></a></span><span>                         </span><span class="hs-comment">-- Verifica se chegou no limite da direita.</span><span>
+</span><span id="line-74"></span><span>                </span><span class="hs-keyword">else</span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Color -&gt; Coord -&gt; [Coord] -&gt; Peca
+</span><a href="Database.html#Peca"><span class="hs-identifier hs-var">Peca</span></a></span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="#local-6989586621679052364"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="annot"><span class="annottext">Color
+</span><a href="#local-6989586621679052363"><span class="hs-identifier hs-var">c</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052362"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052361"><span class="hs-identifier hs-var">y</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(Coord -&gt; Coord) -&gt; [Coord] -&gt; [Coord]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">\</span><span class="hs-special">(</span><span id="local-6989586621679052356"><span class="annot"><span class="annottext">a :: Float
+</span><a href="#local-6989586621679052356"><span class="hs-identifier hs-var">a</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679052355"><span class="annot"><span class="annottext">b :: Float
+</span><a href="#local-6989586621679052355"><span class="hs-identifier hs-var">b</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052356"><span class="hs-identifier hs-var">a</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052355"><span class="hs-identifier hs-var">b</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052360"><span class="hs-identifier hs-var">bs</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-75"></span><span>    </span><span class="annot"><a href="Database.html#Esq"><span class="hs-identifier hs-type">Esq</span></a></span><span>   </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">(Coord -&gt; Bool) -&gt; [Coord] -&gt; Bool
+forall (t :: * -&gt; *) a. Foldable t =&gt; (a -&gt; Bool) -&gt; t a -&gt; Bool
+</span><span class="hs-identifier hs-var">any</span></span><span> </span><span class="hs-special">(</span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Bool
+forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">==</span></span><span> </span><span class="hs-glyph">-</span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#limiteX"><span class="hs-identifier hs-var">limiteX</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Float -&gt; Bool) -&gt; (Coord -&gt; Float) -&gt; Coord -&gt; Bool
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">Coord -&gt; Float
+forall a b. (a, b) -&gt; a
+</span><span class="hs-identifier hs-var">fst</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052360"><span class="hs-identifier hs-var">bs</span></a></span><span> </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052366"><span class="hs-identifier hs-var">p</span></a></span><span>                         </span><span class="hs-comment">-- Verifica se chegou no limite da esquerda.</span><span>
+</span><span id="line-76"></span><span>                </span><span class="hs-keyword">else</span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Color -&gt; Coord -&gt; [Coord] -&gt; Peca
+</span><a href="Database.html#Peca"><span class="hs-identifier hs-var">Peca</span></a></span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="#local-6989586621679052364"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="annot"><span class="annottext">Color
+</span><a href="#local-6989586621679052363"><span class="hs-identifier hs-var">c</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052362"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052361"><span class="hs-identifier hs-var">y</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(Coord -&gt; Coord) -&gt; [Coord] -&gt; [Coord]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">\</span><span class="hs-special">(</span><span id="local-6989586621679052354"><span class="annot"><span class="annottext">a :: Float
+</span><a href="#local-6989586621679052354"><span class="hs-identifier hs-var">a</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679052353"><span class="annot"><span class="annottext">b :: Float
+</span><a href="#local-6989586621679052353"><span class="hs-identifier hs-var">b</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052354"><span class="hs-identifier hs-var">a</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052353"><span class="hs-identifier hs-var">b</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052360"><span class="hs-identifier hs-var">bs</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-77"></span><span>    </span><span class="annot"><a href="Database.html#Baixo"><span class="hs-identifier hs-type">Baixo</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">(Coord -&gt; Bool) -&gt; [Coord] -&gt; Bool
+forall (t :: * -&gt; *) a. Foldable t =&gt; (a -&gt; Bool) -&gt; t a -&gt; Bool
+</span><span class="hs-identifier hs-var">any</span></span><span> </span><span class="hs-special">(</span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Bool
+forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">==</span></span><span> </span><span class="hs-glyph">-</span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#limiteY"><span class="hs-identifier hs-var">limiteY</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Float -&gt; Bool) -&gt; (Coord -&gt; Float) -&gt; Coord -&gt; Bool
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">Coord -&gt; Float
+forall a b. (a, b) -&gt; b
+</span><span class="hs-identifier hs-var">snd</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052360"><span class="hs-identifier hs-var">bs</span></a></span><span> </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052366"><span class="hs-identifier hs-var">p</span></a></span><span>                         </span><span class="hs-comment">-- Verifica se chegou no fundo.</span><span>
+</span><span id="line-78"></span><span>                </span><span class="hs-keyword">else</span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Color -&gt; Coord -&gt; [Coord] -&gt; Peca
+</span><a href="Database.html#Peca"><span class="hs-identifier hs-var">Peca</span></a></span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="#local-6989586621679052364"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="annot"><span class="annottext">Color
+</span><a href="#local-6989586621679052363"><span class="hs-identifier hs-var">c</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052362"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052361"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(Coord -&gt; Coord) -&gt; [Coord] -&gt; [Coord]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">\</span><span class="hs-special">(</span><span id="local-6989586621679052351"><span class="annot"><span class="annottext">a :: Float
+</span><a href="#local-6989586621679052351"><span class="hs-identifier hs-var">a</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679052350"><span class="annot"><span class="annottext">b :: Float
+</span><a href="#local-6989586621679052350"><span class="hs-identifier hs-var">b</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052351"><span class="hs-identifier hs-var">a</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052350"><span class="hs-identifier hs-var">b</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052360"><span class="hs-identifier hs-var">bs</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-79"></span><span>    </span><span class="annot"><a href="Database.html#Rotaciona"><span class="hs-identifier hs-type">Rotaciona</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="#local-6989586621679052364"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Tetramino -&gt; Bool
+forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">==</span></span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="Database.html#O"><span class="hs-identifier hs-var">O</span></a></span><span>                  </span><span class="hs-comment">-- Pe&#231;a do tipo O n&#227;o precisa rotacionar.</span><span>
+</span><span id="line-80"></span><span>                    </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052366"><span class="hs-identifier hs-var">p</span></a></span><span>
+</span><span id="line-81"></span><span>                    </span><span class="hs-keyword">else</span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Color -&gt; Coord -&gt; [Coord] -&gt; Peca
+</span><a href="Database.html#Peca"><span class="hs-identifier hs-var">Peca</span></a></span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="#local-6989586621679052364"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="annot"><span class="annottext">Color
+</span><a href="#local-6989586621679052363"><span class="hs-identifier hs-var">c</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052348"><span class="hs-identifier hs-var">novaP</span></a></span><span> </span><span class="annot"><span class="annottext">[Coord] -&gt; Int -&gt; Coord
+forall a. [a] -&gt; Int -&gt; a
+</span><span class="hs-operator hs-var">!!</span></span><span> </span><span class="annot"><span class="hs-number">1</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052348"><span class="hs-identifier hs-var">novaP</span></a></span><span>
+</span><span id="line-82"></span><span>                      </span><span class="hs-keyword">where</span><span>
+</span><span id="line-83"></span><span>                        </span><span id="local-6989586621679052348"><span class="annot"><span class="annottext">novaP :: [Coord]
+</span><a href="#local-6989586621679052348"><span class="hs-identifier hs-var hs-var">novaP</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">(Coord -&gt; Coord) -&gt; [Coord] -&gt; [Coord]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">\</span><span class="hs-special">(</span><span id="local-6989586621679052347"><span class="annot"><span class="annottext">a :: Float
+</span><a href="#local-6989586621679052347"><span class="hs-identifier hs-var">a</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679052346"><span class="annot"><span class="annottext">b :: Float
+</span><a href="#local-6989586621679052346"><span class="hs-identifier hs-var">b</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052347"><span class="hs-identifier hs-var">a</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052345"><span class="hs-identifier hs-var">sinal</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052346"><span class="hs-identifier hs-var">b</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052344"><span class="hs-identifier hs-var">pecaRot</span></a></span><span> </span><span class="hs-comment">-- Coordenadas da pe&#231;a rotacionada.</span><span>
+</span><span id="line-84"></span><span>                        </span><span id="local-6989586621679052345"><span class="annot"><span class="annottext">sinal :: Float
+</span><a href="#local-6989586621679052345"><span class="hs-identifier hs-var hs-var">sinal</span></a></span></span><span>                                         </span><span class="hs-comment">-- Verifica por quanto e por qual lado</span><span>
+</span><span id="line-85"></span><span>                          </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">(Float -&gt; Bool) -&gt; [Float] -&gt; Bool
+forall (t :: * -&gt; *) a. Foldable t =&gt; (a -&gt; Bool) -&gt; t a -&gt; Bool
+</span><span class="hs-identifier hs-var">any</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Bool
+forall a. Ord a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">&gt;</span></span><span> </span><span class="annot"><span class="hs-number">0</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Float]
+</span><a href="#local-6989586621679052342"><span class="hs-identifier hs-var">volta</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[Float] -&gt; Float
+forall (t :: * -&gt; *) a. (Foldable t, Ord a) =&gt; t a -&gt; a
+</span><span class="hs-identifier hs-var">maximum</span></span><span> </span><span class="annot"><span class="annottext">[Float]
+</span><a href="#local-6989586621679052342"><span class="hs-identifier hs-var">volta</span></a></span><span>           </span><span class="hs-comment">-- a pe&#231;a ultrapassou o limite.</span><span>
+</span><span id="line-86"></span><span>                          </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">(Float -&gt; Bool) -&gt; [Float] -&gt; Bool
+forall (t :: * -&gt; *) a. Foldable t =&gt; (a -&gt; Bool) -&gt; t a -&gt; Bool
+</span><span class="hs-identifier hs-var">any</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Bool
+forall a. Ord a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">&lt;</span></span><span> </span><span class="annot"><span class="hs-number">0</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Float]
+</span><a href="#local-6989586621679052342"><span class="hs-identifier hs-var">volta</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[Float] -&gt; Float
+forall (t :: * -&gt; *) a. (Foldable t, Ord a) =&gt; t a -&gt; a
+</span><span class="hs-identifier hs-var">minimum</span></span><span> </span><span class="annot"><span class="annottext">[Float]
+</span><a href="#local-6989586621679052342"><span class="hs-identifier hs-var">volta</span></a></span><span>
+</span><span id="line-87"></span><span>                          </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Bool
+</span><span class="hs-identifier hs-var">otherwise</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-number">0</span></span><span>
+</span><span id="line-88"></span><span>                        </span><span id="local-6989586621679052342"><span class="annot"><span class="annottext">volta :: [Float]
+</span><a href="#local-6989586621679052342"><span class="hs-identifier hs-var hs-var">volta</span></a></span></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">(Coord -&gt; Float) -&gt; [Coord] -&gt; [Float]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="annot"><span class="annottext">Coord -&gt; Float
+</span><a href="Main.html#voltaLimite"><span class="hs-identifier hs-var">voltaLimite</span></a></span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052344"><span class="hs-identifier hs-var">pecaRot</span></a></span><span>             </span><span class="hs-comment">-- Verifica se algum bloco est&#225; fora dos limites</span><span>
+</span><span id="line-89"></span><span>                                                                      </span><span class="hs-comment">-- do jogo depois de rotacionado.</span><span>
+</span><span id="line-90"></span><span>                        </span><span id="local-6989586621679052344"><span class="annot"><span class="annottext">pecaRot :: [Coord]
+</span><a href="#local-6989586621679052344"><span class="hs-identifier hs-var hs-var">pecaRot</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">(Coord -&gt; Coord) -&gt; [Coord] -&gt; [Coord]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="annot"><span class="annottext">Coord -&gt; Coord
+</span><a href="#local-6989586621679052337"><span class="hs-identifier hs-var">rotaciona</span></a></span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052360"><span class="hs-identifier hs-var">bs</span></a></span><span>                    </span><span class="hs-comment">-- Rotaciona a peca.</span><span>
+</span><span id="line-91"></span><span>                        </span><span id="local-6989586621679052337"><span class="annot"><span class="annottext">rotaciona :: Coord -&gt; Coord
+</span><a href="#local-6989586621679052337"><span class="hs-identifier hs-var hs-var">rotaciona</span></a></span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679052336"><span class="annot"><span class="annottext">a :: Float
+</span><a href="#local-6989586621679052336"><span class="hs-identifier hs-var">a</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679052335"><span class="annot"><span class="annottext">b :: Float
+</span><a href="#local-6989586621679052335"><span class="hs-identifier hs-var">b</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052362"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052361"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052335"><span class="hs-identifier hs-var">b</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052361"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052362"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052336"><span class="hs-identifier hs-var">a</span></a></span><span class="hs-special">)</span><span>             </span><span class="hs-comment">-- Atualiza a coordenada de um bloco rotacionado.</span><span>
+</span><span id="line-92"></span><span>
+</span><span id="line-93"></span><span>
+</span><span id="line-94"></span><span>
+</span><span id="line-95"></span><span class="hs-comment">-- | Devolve por quanto que um bloco ultrapassou os limites da tela.</span><span>
+</span><span id="line-96"></span><span class="annot"><a href="Main.html#voltaLimite"><span class="hs-identifier hs-type">voltaLimite</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Database.html#Coord"><span class="hs-identifier hs-type">Coord</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Float</span></span><span>
+</span><span id="line-97"></span><span id="voltaLimite"><span class="annot"><span class="annottext">voltaLimite :: Coord -&gt; Float
+</span><a href="Main.html#voltaLimite"><span class="hs-identifier hs-var hs-var">voltaLimite</span></a></span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679052334"><span class="annot"><span class="annottext">a :: Float
+</span><a href="#local-6989586621679052334"><span class="hs-identifier hs-var">a</span></a></span></span><span class="hs-special">,</span><span> </span><span class="hs-identifier">_</span><span class="hs-special">)</span><span>
+</span><span id="line-98"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052334"><span class="hs-identifier hs-var">a</span></a></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Bool
+forall a. Ord a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">&gt;</span></span><span>  </span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#limiteX"><span class="hs-identifier hs-var">limiteX</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052334"><span class="hs-identifier hs-var">a</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#limiteX"><span class="hs-identifier hs-var">limiteX</span></a></span><span>
+</span><span id="line-99"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052334"><span class="hs-identifier hs-var">a</span></a></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Bool
+forall a. Ord a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">&lt;</span></span><span> </span><span class="hs-glyph">-</span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#limiteX"><span class="hs-identifier hs-var">limiteX</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052334"><span class="hs-identifier hs-var">a</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#limiteX"><span class="hs-identifier hs-var">limiteX</span></a></span><span>
+</span><span id="line-100"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Bool
+</span><span class="hs-identifier hs-var">otherwise</span></span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-number">0</span></span><span>
+</span><span id="line-101"></span><span>
+</span><span id="line-102"></span><span>
+</span><span id="line-103"></span><span class="hs-comment">-- | Movimenta a pe&#231;a direto para o fundo da tela, movendo pra baixo recursivamente.</span><span>
+</span><span id="line-104"></span><span class="annot"><a href="Main.html#moveFundo"><span class="hs-identifier hs-type">moveFundo</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-type">Mundo</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Database.html#Peca"><span class="hs-identifier hs-type">Peca</span></a></span><span>
+</span><span id="line-105"></span><span id="moveFundo"><span class="annot"><span class="annottext">moveFundo :: Mundo -&gt; Peca
+</span><a href="Main.html#moveFundo"><span class="hs-identifier hs-var hs-var">moveFundo</span></a></span></span><span> </span><span id="local-6989586621679052333"><span class="annot"><span class="annottext">m :: Mundo
+</span><a href="#local-6989586621679052333"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Direcao -&gt; Bool
+</span><a href="Main.html#podeMover"><span class="hs-identifier hs-var">podeMover</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052333"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Baixo"><span class="hs-identifier hs-var">Baixo</span></a></span><span>
+</span><span id="line-106"></span><span>                 </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Main.html#moveFundo"><span class="hs-identifier hs-var">moveFundo</span></a></span><span> </span><span class="annot"><span class="annottext">(Mundo -&gt; Peca) -&gt; Mundo -&gt; Peca
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052333"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">pecaAtual :: Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var">pecaAtual</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Direcao -&gt; Peca -&gt; Peca
+</span><a href="Main.html#move"><span class="hs-identifier hs-var">move</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Baixo"><span class="hs-identifier hs-var">Baixo</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052333"><span class="hs-identifier hs-var">m</span></a></span><span class="hs-special">)</span><span class="hs-special">}</span><span>
+</span><span id="line-107"></span><span>                 </span><span class="hs-keyword">else</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052333"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><span id="line-108"></span><span>
+</span><span id="line-109"></span><span>
+</span><span id="line-110"></span><span class="hs-comment">-- | Atualiza o mundo.</span><span>
+</span><span id="line-111"></span><span class="annot"><a href="Main.html#atualizaMundo"><span class="hs-identifier hs-type">atualizaMundo</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Float</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-type">Mundo</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-type">Mundo</span></a></span><span>
+</span><span id="line-112"></span><span id="atualizaMundo"><span class="annot"><span class="annottext">atualizaMundo :: Float -&gt; Mundo -&gt; Mundo
+</span><a href="Main.html#atualizaMundo"><span class="hs-identifier hs-var hs-var">atualizaMundo</span></a></span></span><span> </span><span class="hs-identifier">_</span><span> </span><span id="local-6989586621679052331"><span class="annot"><span class="annottext">m :: Mundo
+</span><a href="#local-6989586621679052331"><span class="hs-identifier hs-var">m</span></a></span></span><span class="hs-glyph">@</span><span class="hs-special">(</span><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-type">Mundo</span></a></span><span> </span><span id="local-6989586621679052330"><span class="annot"><span class="annottext">bs :: [(Coord, Color)]
+</span><a href="#local-6989586621679052330"><span class="hs-identifier hs-var">bs</span></a></span></span><span> </span><span id="local-6989586621679052329"><span class="annot"><span class="annottext">p :: Peca
+</span><a href="#local-6989586621679052329"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span id="local-6989586621679052328"><span class="annot"><span class="annottext">ps :: [Tetramino]
+</span><a href="#local-6989586621679052328"><span class="hs-identifier hs-var">ps</span></a></span></span><span> </span><span id="local-6989586621679052327"><span class="annot"><span class="annottext">pont :: Int
+</span><a href="#local-6989586621679052327"><span class="hs-identifier hs-var">pont</span></a></span></span><span> </span><span id="local-6989586621679052326"><span class="annot"><span class="annottext">t :: Int
+</span><a href="#local-6989586621679052326"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span id="local-6989586621679052325"><span class="annot"><span class="annottext">f :: Int
+</span><a href="#local-6989586621679052325"><span class="hs-identifier hs-var">f</span></a></span></span><span> </span><span id="local-6989586621679052324"><span class="annot"><span class="annottext">g :: Bool
+</span><a href="#local-6989586621679052324"><span class="hs-identifier hs-var">g</span></a></span></span><span class="hs-special">)</span><span>
+</span><span id="line-113"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Bool -&gt; Bool
+</span><span class="hs-identifier hs-var">not</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Mundo -&gt; Direcao -&gt; Bool
+</span><a href="Main.html#podeMover"><span class="hs-identifier hs-var">podeMover</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052331"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Baixo"><span class="hs-identifier hs-var">Baixo</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><span class="hs-operator hs-var">&amp;&amp;</span></span><span> </span><span class="annot"><span class="annottext">(Coord -&gt; Bool) -&gt; [Coord] -&gt; Bool
+forall (t :: * -&gt; *) a. Foldable t =&gt; (a -&gt; Bool) -&gt; t a -&gt; Bool
+</span><span class="hs-identifier hs-var">any</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">\</span><span class="hs-special">(</span><span class="hs-identifier">_</span><span class="hs-special">,</span><span> </span><span id="local-6989586621679052322"><span class="annot"><span class="annottext">y :: Float
+</span><a href="#local-6989586621679052322"><span class="hs-identifier hs-var">y</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052322"><span class="hs-identifier hs-var">y</span></a></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Bool
+forall a. Ord a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">&gt;=</span></span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#limiteY"><span class="hs-identifier hs-var">limiteY</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Peca -&gt; [Coord]
+</span><a href="Database.html#blocosPeca"><span class="hs-identifier hs-var hs-var">blocosPeca</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052329"><span class="hs-identifier hs-var">p</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052331"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">gameOver :: Bool
+</span><a href="Database.html#gameOver"><span class="hs-identifier hs-var">gameOver</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Bool
+</span><span class="hs-identifier hs-var">True</span></span><span class="hs-special">}</span><span>  </span><span class="hs-comment">-- Verifica se o jogo acabou.</span><span>
+</span><span id="line-114"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Bool -&gt; Bool
+</span><span class="hs-identifier hs-var">not</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Mundo -&gt; Direcao -&gt; Bool
+</span><a href="Main.html#podeMover"><span class="hs-identifier hs-var">podeMover</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052331"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Baixo"><span class="hs-identifier hs-var">Baixo</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-115"></span><span>    </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+</span><a href="#local-6989586621679052321"><span class="hs-identifier hs-var">novoBs</span></a></span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)] -&gt; [(Coord, Color)] -&gt; Bool
+forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">/=</span></span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+</span><a href="#local-6989586621679052330"><span class="hs-identifier hs-var">bs</span></a></span><span>                                                     </span><span class="hs-comment">-- Verifica se completou alguma fileira.</span><span>
+</span><span id="line-116"></span><span>       </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+-&gt; Peca -&gt; [Tetramino] -&gt; Int -&gt; Int -&gt; Int -&gt; Bool -&gt; Mundo
+</span><a href="Database.html#Mundo"><span class="hs-identifier hs-var">Mundo</span></a></span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+</span><a href="#local-6989586621679052321"><span class="hs-identifier hs-var">novoBs</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Tetramino -&gt; Peca
+</span><a href="Database.html#criaPeca"><span class="hs-identifier hs-var">criaPeca</span></a></span><span> </span><span class="annot"><span class="annottext">(Tetramino -&gt; Peca) -&gt; Tetramino -&gt; Peca
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">[Tetramino] -&gt; Tetramino
+forall a. [a] -&gt; a
+</span><span class="hs-identifier hs-var">head</span></span><span> </span><span class="annot"><span class="annottext">[Tetramino]
+</span><a href="#local-6989586621679052328"><span class="hs-identifier hs-var">ps</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">[Tetramino] -&gt; [Tetramino]
+forall a. [a] -&gt; [a]
+</span><span class="hs-identifier hs-var">tail</span></span><span> </span><span class="annot"><span class="annottext">[Tetramino]
+</span><a href="#local-6989586621679052328"><span class="hs-identifier hs-var">ps</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052317"><span class="hs-identifier hs-var">novaPont</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052326"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="annot"><span class="hs-number">0</span></span><span> </span><span class="annot"><span class="annottext">Bool
+</span><a href="#local-6989586621679052324"><span class="hs-identifier hs-var">g</span></a></span><span>  </span><span class="hs-comment">-- Se sim, limpa a(s) fileira(s) e atualiza a pontua&#231;&#227;o.</span><span>
+</span><span id="line-117"></span><span>       </span><span class="hs-keyword">else</span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+-&gt; Peca -&gt; [Tetramino] -&gt; Int -&gt; Int -&gt; Int -&gt; Bool -&gt; Mundo
+</span><a href="Database.html#Mundo"><span class="hs-identifier hs-var">Mundo</span></a></span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+</span><a href="#local-6989586621679052330"><span class="hs-identifier hs-var">bs</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Tetramino -&gt; Peca
+</span><a href="Database.html#criaPeca"><span class="hs-identifier hs-var">criaPeca</span></a></span><span> </span><span class="annot"><span class="annottext">(Tetramino -&gt; Peca) -&gt; Tetramino -&gt; Peca
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">[Tetramino] -&gt; Tetramino
+forall a. [a] -&gt; a
+</span><span class="hs-identifier hs-var">head</span></span><span> </span><span class="annot"><span class="annottext">[Tetramino]
+</span><a href="#local-6989586621679052328"><span class="hs-identifier hs-var">ps</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">[Tetramino] -&gt; [Tetramino]
+forall a. [a] -&gt; [a]
+</span><span class="hs-identifier hs-var">tail</span></span><span> </span><span class="annot"><span class="annottext">[Tetramino]
+</span><a href="#local-6989586621679052328"><span class="hs-identifier hs-var">ps</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052327"><span class="hs-identifier hs-var">pont</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052326"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052325"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">Bool
+</span><a href="#local-6989586621679052324"><span class="hs-identifier hs-var">g</span></a></span><span>          </span><span class="hs-comment">-- Caso contr&#225;rio, apenas cria a pr&#243;xima pe&#231;a.</span><span>
+</span><span id="line-118"></span><span>
+</span><span id="line-119"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052326"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Bool
+forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">==</span></span><span> </span><span class="annot"><span class="hs-number">0</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+-&gt; Peca -&gt; [Tetramino] -&gt; Int -&gt; Int -&gt; Int -&gt; Bool -&gt; Mundo
+</span><a href="Database.html#Mundo"><span class="hs-identifier hs-var">Mundo</span></a></span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+</span><a href="#local-6989586621679052316"><span class="hs-identifier hs-var">blocos</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Direcao -&gt; Peca -&gt; Peca
+</span><a href="Main.html#move"><span class="hs-identifier hs-var">move</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Baixo"><span class="hs-identifier hs-var">Baixo</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052329"><span class="hs-identifier hs-var">p</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Tetramino]
+</span><a href="#local-6989586621679052328"><span class="hs-identifier hs-var">ps</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052327"><span class="hs-identifier hs-var">pont</span></a></span><span> </span><span class="annot"><span class="hs-number">3</span></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052325"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">Bool
+</span><a href="#local-6989586621679052324"><span class="hs-identifier hs-var">g</span></a></span><span>      </span><span class="hs-comment">-- Se o timer chegou ao 0, move a pe&#231;a </span><span>
+</span><span id="line-120"></span><span>                                                            </span><span class="hs-comment">-- para baixo e recome&#231;a o timer.</span><span>
+</span><span id="line-121"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Bool
+</span><span class="hs-identifier hs-var">otherwise</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+-&gt; Peca -&gt; [Tetramino] -&gt; Int -&gt; Int -&gt; Int -&gt; Bool -&gt; Mundo
+</span><a href="Database.html#Mundo"><span class="hs-identifier hs-var">Mundo</span></a></span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+</span><a href="#local-6989586621679052330"><span class="hs-identifier hs-var">bs</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052329"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">[Tetramino]
+</span><a href="#local-6989586621679052328"><span class="hs-identifier hs-var">ps</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052327"><span class="hs-identifier hs-var">pont</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052326"><span class="hs-identifier hs-var">t</span></a></span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="hs-number">1</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052325"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">Bool
+</span><a href="#local-6989586621679052324"><span class="hs-identifier hs-var">g</span></a></span><span>                </span><span class="hs-comment">-- Sen&#227;o, decrementa o timer.</span><span>
+</span><span id="line-122"></span><span>
+</span><span id="line-123"></span><span>  </span><span class="hs-keyword">where</span><span> </span><span id="local-6989586621679052315"><span class="annot"><span class="annottext">novoM :: Mundo
+</span><a href="#local-6989586621679052315"><span class="hs-identifier hs-var hs-var">novoM</span></a></span></span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Mundo
+</span><a href="Main.html#limpaFileira"><span class="hs-identifier hs-var">limpaFileira</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052331"><span class="hs-identifier hs-var">m</span></a></span><span>                                   </span><span class="hs-comment">-- Conta e tira as fileiras completas do mundo.</span><span>
+</span><span id="line-124"></span><span>        </span><span id="local-6989586621679052321"><span class="annot"><span class="annottext">novoBs :: [(Coord, Color)]
+</span><a href="#local-6989586621679052321"><span class="hs-identifier hs-var hs-var">novoBs</span></a></span></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; [(Coord, Color)]
+</span><a href="Database.html#blocosPintados"><span class="hs-identifier hs-var hs-var">blocosPintados</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052315"><span class="hs-identifier hs-var">novoM</span></a></span><span>                             </span><span class="hs-comment">-- Blocos do mundo sem as fileiras completas.</span><span>
+</span><span id="line-125"></span><span>        </span><span id="local-6989586621679052317"><span class="annot"><span class="annottext">novaPont :: Int
+</span><a href="#local-6989586621679052317"><span class="hs-identifier hs-var hs-var">novaPont</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052327"><span class="hs-identifier hs-var">pont</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int
+</span><a href="Main.html#atualizaPont"><span class="hs-identifier hs-var">atualizaPont</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Mundo -&gt; Int
+</span><a href="Database.html#fileirasCompletas"><span class="hs-identifier hs-var hs-var">fileirasCompletas</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052315"><span class="hs-identifier hs-var">novoM</span></a></span><span class="hs-special">)</span><span>    </span><span class="hs-comment">-- Atualiza a pontua&#231;&#227;o.</span><span>
+</span><span id="line-126"></span><span>
+</span><span id="line-127"></span><span>        </span><span id="local-6989586621679052316"><span class="annot"><span class="annottext">blocos :: [(Coord, Color)]
+</span><a href="#local-6989586621679052316"><span class="hs-identifier hs-var hs-var">blocos</span></a></span></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">((Coord, Color) -&gt; Bool) -&gt; [(Coord, Color)] -&gt; [(Coord, Color)]
+forall a. (a -&gt; Bool) -&gt; [a] -&gt; [a]
+</span><span class="hs-identifier hs-var">filter</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">\</span><span class="hs-special">(</span><span id="local-6989586621679052311"><span class="annot"><span class="annottext">x :: Coord
+</span><a href="#local-6989586621679052311"><span class="hs-identifier hs-var">x</span></a></span></span><span class="hs-special">,</span><span> </span><span class="hs-identifier">_</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052311"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">Coord -&gt; [Coord] -&gt; Bool
+forall (t :: * -&gt; *) a. (Foldable t, Eq a) =&gt; a -&gt; t a -&gt; Bool
+</span><span class="hs-operator hs-var">`notElem`</span></span><span> </span><span class="annot"><span class="annottext">Peca -&gt; [Coord]
+</span><a href="Database.html#blocosPeca"><span class="hs-identifier hs-var hs-var">blocosPeca</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052329"><span class="hs-identifier hs-var">p</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+</span><a href="#local-6989586621679052330"><span class="hs-identifier hs-var">bs</span></a></span><span>                    </span><span class="hs-comment">-- Blocos do mundo com a pe&#231;a</span><span>
+</span><span id="line-128"></span><span>                </span><span class="annot"><span class="annottext">[(Coord, Color)] -&gt; [(Coord, Color)] -&gt; [(Coord, Color)]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="annot"><span class="annottext">(Coord -&gt; (Coord, Color)) -&gt; [Coord] -&gt; [(Coord, Color)]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-special">,</span></span><span> </span><span class="annot"><span class="annottext">Peca -&gt; Color
+</span><a href="Database.html#cor"><span class="hs-identifier hs-var hs-var">cor</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Direcao -&gt; Peca -&gt; Peca
+</span><a href="Main.html#move"><span class="hs-identifier hs-var">move</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Baixo"><span class="hs-identifier hs-var">Baixo</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052329"><span class="hs-identifier hs-var">p</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Peca -&gt; [Coord]
+</span><a href="Database.html#blocosPeca"><span class="hs-identifier hs-var hs-var">blocosPeca</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Direcao -&gt; Peca -&gt; Peca
+</span><a href="Main.html#move"><span class="hs-identifier hs-var">move</span></a></span><span> </span><span class="annot"><span class="annottext">Direcao
+</span><a href="Database.html#Baixo"><span class="hs-identifier hs-var">Baixo</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052329"><span class="hs-identifier hs-var">p</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>    </span><span class="hs-comment">-- movida para baixo.</span><span>
+</span><span id="line-129"></span><span>
+</span><span id="line-130"></span><span>
+</span><span id="line-131"></span><span class="hs-comment">-- | Limpa as fileiras completas do mundo recursivamente (de acordo com os blocos da pe&#231;a),</span><span>
+</span><span id="line-132"></span><span class="hs-comment">-- atualizando o n&#250;mero de fileiras completas.</span><span>
+</span><span id="line-133"></span><span class="annot"><a href="Main.html#limpaFileira"><span class="hs-identifier hs-type">limpaFileira</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-type">Mundo</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-type">Mundo</span></a></span><span>
+</span><span id="line-134"></span><span id="limpaFileira"><span class="annot"><span class="annottext">limpaFileira :: Mundo -&gt; Mundo
+</span><a href="Main.html#limpaFileira"><span class="hs-identifier hs-var hs-var">limpaFileira</span></a></span></span><span> </span><span id="local-6989586621679052310"><span class="annot"><span class="annottext">m :: Mundo
+</span><a href="#local-6989586621679052310"><span class="hs-identifier hs-var">m</span></a></span></span><span class="hs-glyph">@</span><span class="hs-special">(</span><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-type">Mundo</span></a></span><span> </span><span id="local-6989586621679052309"><span class="annot"><span class="annottext">bs :: [(Coord, Color)]
+</span><a href="#local-6989586621679052309"><span class="hs-identifier hs-var">bs</span></a></span></span><span> </span><span id="local-6989586621679052308"><span class="annot"><span class="annottext">p :: Peca
+</span><a href="#local-6989586621679052308"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span id="local-6989586621679052307"><span class="annot"><span class="annottext">ps :: [Tetramino]
+</span><a href="#local-6989586621679052307"><span class="hs-identifier hs-var">ps</span></a></span></span><span> </span><span id="local-6989586621679052306"><span class="annot"><span class="annottext">pont :: Int
+</span><a href="#local-6989586621679052306"><span class="hs-identifier hs-var">pont</span></a></span></span><span> </span><span id="local-6989586621679052305"><span class="annot"><span class="annottext">t :: Int
+</span><a href="#local-6989586621679052305"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span id="local-6989586621679052304"><span class="annot"><span class="annottext">f :: Int
+</span><a href="#local-6989586621679052304"><span class="hs-identifier hs-var">f</span></a></span></span><span> </span><span id="local-6989586621679052303"><span class="annot"><span class="annottext">g :: Bool
+</span><a href="#local-6989586621679052303"><span class="hs-identifier hs-var">g</span></a></span></span><span class="hs-special">)</span><span>
+</span><span id="line-135"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">[Coord] -&gt; Bool
+forall (t :: * -&gt; *) a. Foldable t =&gt; t a -&gt; Bool
+</span><span class="hs-identifier hs-var">null</span></span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052301"><span class="hs-identifier hs-var">bsPeca</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052310"><span class="hs-identifier hs-var">m</span></a></span><span>                     </span><span class="hs-comment">-- Se n&#227;o h&#225; mais blocos da pe&#231;a para verificar, n&#227;o faz nada.</span><span>
+</span><span id="line-136"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Bool
+</span><span class="hs-identifier hs-var">otherwise</span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-137"></span><span>    </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">(Coord -&gt; Bool) -&gt; [Coord] -&gt; Bool
+forall (t :: * -&gt; *) a. Foldable t =&gt; (a -&gt; Bool) -&gt; t a -&gt; Bool
+</span><span class="hs-identifier hs-var">all</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Coord -&gt; [Coord] -&gt; Bool
+forall (t :: * -&gt; *) a. (Foldable t, Eq a) =&gt; a -&gt; t a -&gt; Bool
+</span><span class="hs-operator hs-var">`elem`</span></span><span> </span><span class="annot"><span class="annottext">((Coord, Color) -&gt; Coord) -&gt; [(Coord, Color)] -&gt; [Coord]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="annot"><span class="annottext">(Coord, Color) -&gt; Coord
+forall a b. (a, b) -&gt; a
+</span><span class="hs-identifier hs-var">fst</span></span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+</span><a href="#local-6989586621679052309"><span class="hs-identifier hs-var">bs</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052299"><span class="hs-identifier hs-var">fileira</span></a></span><span>  </span><span class="hs-comment">-- Verifica se uma fileira est&#225; completa.</span><span>
+</span><span id="line-138"></span><span>
+</span><span id="line-139"></span><span>       </span><span class="hs-comment">-- Se sim, chama a fun&#231;&#227;o recursivamente com o mundo sem a fileira completa, </span><span>
+</span><span id="line-140"></span><span>       </span><span class="hs-comment">-- incrementando o numero de fileiras completas.</span><span>
+</span><span id="line-141"></span><span>       </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Mundo
+</span><a href="Main.html#limpaFileira"><span class="hs-identifier hs-var">limpaFileira</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">[(Coord, Color)]
+-&gt; Peca -&gt; [Tetramino] -&gt; Int -&gt; Int -&gt; Int -&gt; Bool -&gt; Mundo
+</span><a href="Database.html#Mundo"><span class="hs-identifier hs-var">Mundo</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">((Coord, Color) -&gt; (Coord, Color))
+-&gt; [(Coord, Color)] -&gt; [(Coord, Color)]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="annot"><span class="annottext">(Coord, Color) -&gt; (Coord, Color)
+forall a b. ((a, Float), b) -&gt; ((a, Float), b)
+</span><a href="#local-6989586621679052298"><span class="hs-identifier hs-var">desce</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">((Coord, Color) -&gt; Bool) -&gt; [(Coord, Color)] -&gt; [(Coord, Color)]
+forall a. (a -&gt; Bool) -&gt; [a] -&gt; [a]
+</span><span class="hs-identifier hs-var">filter</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">\</span><span class="hs-special">(</span><span id="local-6989586621679052297"><span class="annot"><span class="annottext">x :: Coord
+</span><a href="#local-6989586621679052297"><span class="hs-identifier hs-var">x</span></a></span></span><span class="hs-special">,</span><span> </span><span class="hs-identifier">_</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052297"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">Coord -&gt; [Coord] -&gt; Bool
+forall (t :: * -&gt; *) a. (Foldable t, Eq a) =&gt; a -&gt; t a -&gt; Bool
+</span><span class="hs-operator hs-var">`notElem`</span></span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052299"><span class="hs-identifier hs-var">fileira</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+</span><a href="#local-6989586621679052309"><span class="hs-identifier hs-var">bs</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052308"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">[Tetramino]
+</span><a href="#local-6989586621679052307"><span class="hs-identifier hs-var">ps</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052306"><span class="hs-identifier hs-var">pont</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052305"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052304"><span class="hs-identifier hs-var">f</span></a></span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="hs-number">1</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Bool
+</span><a href="#local-6989586621679052303"><span class="hs-identifier hs-var">g</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-142"></span><span>
+</span><span id="line-143"></span><span>       </span><span class="hs-comment">-- Caso contr&#225;rio, chama a fun&#231;&#227;o para os pr&#243;ximos blocos da pe&#231;a.</span><span>
+</span><span id="line-144"></span><span>       </span><span class="hs-keyword">else</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Mundo
+</span><a href="Main.html#limpaFileira"><span class="hs-identifier hs-var">limpaFileira</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">[(Coord, Color)]
+-&gt; Peca -&gt; [Tetramino] -&gt; Int -&gt; Int -&gt; Int -&gt; Bool -&gt; Mundo
+</span><a href="Database.html#Mundo"><span class="hs-identifier hs-var">Mundo</span></a></span><span> </span><span class="annot"><span class="annottext">[(Coord, Color)]
+</span><a href="#local-6989586621679052309"><span class="hs-identifier hs-var">bs</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052308"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">blocosPeca :: [Coord]
+</span><a href="Database.html#blocosPeca"><span class="hs-identifier hs-var">blocosPeca</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[Coord] -&gt; [Coord]
+forall a. [a] -&gt; [a]
+</span><span class="hs-identifier hs-var">tail</span></span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052301"><span class="hs-identifier hs-var">bsPeca</span></a></span><span class="hs-special">}</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Tetramino]
+</span><a href="#local-6989586621679052307"><span class="hs-identifier hs-var">ps</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052306"><span class="hs-identifier hs-var">pont</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052305"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679052304"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="annot"><span class="annottext">Bool
+</span><a href="#local-6989586621679052303"><span class="hs-identifier hs-var">g</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-145"></span><span>
+</span><span id="line-146"></span><span>         </span><span class="hs-keyword">where</span><span> </span><span id="local-6989586621679052299"><span class="annot"><span class="annottext">fileira :: [Coord]
+</span><a href="#local-6989586621679052299"><span class="hs-identifier hs-var hs-var">fileira</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052296"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Coord -&gt; Float
+forall a b. (a, b) -&gt; b
+</span><span class="hs-identifier hs-var">snd</span></span><span> </span><span class="annot"><span class="annottext">(Coord -&gt; Float) -&gt; Coord -&gt; Float
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">[Coord] -&gt; Coord
+forall a. [a] -&gt; a
+</span><span class="hs-identifier hs-var">head</span></span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052301"><span class="hs-identifier hs-var">bsPeca</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">|</span><span> </span><span id="local-6989586621679052296"><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052296"><span class="hs-identifier hs-var">x</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-special">[</span><span class="hs-glyph">-</span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#limiteX"><span class="hs-identifier hs-var">limiteX</span></a></span><span class="hs-special">,</span><span> </span><span class="hs-glyph">-</span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#limiteX"><span class="hs-identifier hs-var">limiteX</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span> </span><span class="hs-glyph">..</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#limiteX"><span class="hs-identifier hs-var">limiteX</span></a></span><span class="hs-special">]</span><span class="hs-special">]</span><span> </span><span class="hs-comment">-- Coordenadas de uma fileira</span><span>
+</span><span id="line-147"></span><span>                                                                                             </span><span class="hs-comment">-- que cont&#233;m um bloco da pe&#231;a.</span><span>
+</span><span id="line-148"></span><span>               </span><span id="local-6989586621679052301"><span class="annot"><span class="annottext">bsPeca :: [Coord]
+</span><a href="#local-6989586621679052301"><span class="hs-identifier hs-var hs-var">bsPeca</span></a></span></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Peca -&gt; [Coord]
+</span><a href="Database.html#blocosPeca"><span class="hs-identifier hs-var hs-var">blocosPeca</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052308"><span class="hs-identifier hs-var">p</span></a></span><span>                               </span><span class="hs-comment">-- Blocos da pe&#231;a ativa.</span><span>
+</span><span id="line-149"></span><span>               </span><span id="local-6989586621679052298"><span class="annot"><span class="annottext">desce :: ((a, Float), b) -&gt; ((a, Float), b)
+</span><a href="#local-6989586621679052298"><span class="hs-identifier hs-var hs-var">desce</span></a></span></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-special">(</span><span class="hs-special">(</span><span id="local-6989586621679052295"><span class="annot"><span class="annottext">a :: a
+</span><a href="#local-6989586621679052295"><span class="hs-identifier hs-var">a</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679052294"><span class="annot"><span class="annottext">b :: Float
+</span><a href="#local-6989586621679052294"><span class="hs-identifier hs-var">b</span></a></span></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span id="local-6989586621679052293"><span class="annot"><span class="annottext">c :: b
+</span><a href="#local-6989586621679052293"><span class="hs-identifier hs-var">c</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052294"><span class="hs-identifier hs-var">b</span></a></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Bool
+forall a. Ord a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">&gt;</span></span><span> </span><span class="annot"><span class="annottext">Coord -&gt; Float
+forall a b. (a, b) -&gt; b
+</span><span class="hs-identifier hs-var">snd</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">[Coord] -&gt; Coord
+forall a. [a] -&gt; a
+</span><span class="hs-identifier hs-var">head</span></span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052301"><span class="hs-identifier hs-var">bsPeca</span></a></span><span class="hs-special">)</span><span>   </span><span class="hs-comment">-- Move para baixo todos os blocos</span><span>
+</span><span id="line-150"></span><span>                                            </span><span class="hs-keyword">then</span><span> </span><span class="hs-special">(</span><span class="hs-special">(</span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679052295"><span class="hs-identifier hs-var">a</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052294"><span class="hs-identifier hs-var">b</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">b
+</span><a href="#local-6989586621679052293"><span class="hs-identifier hs-var">c</span></a></span><span class="hs-special">)</span><span>    </span><span class="hs-comment">-- que estavam acima da fileira que foi limpa.</span><span>
+</span><span id="line-151"></span><span>                                            </span><span class="hs-keyword">else</span><span> </span><span class="hs-special">(</span><span class="hs-special">(</span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679052295"><span class="hs-identifier hs-var">a</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052294"><span class="hs-identifier hs-var">b</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">b
+</span><a href="#local-6989586621679052293"><span class="hs-identifier hs-var">c</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-152"></span><span>
+</span><span id="line-153"></span><span>
+</span><span id="line-154"></span><span>
+</span><span id="line-155"></span><span class="hs-comment">-- | Sistema de pontua&#231;&#227;o do jogo baseada na quantidade de fileiras completas de uma vez.</span><span>
+</span><span id="line-156"></span><span class="annot"><a href="Main.html#atualizaPont"><span class="hs-identifier hs-type">atualizaPont</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span>
+</span><span id="line-157"></span><span id="atualizaPont"><span class="annot"><span class="annottext">atualizaPont :: Int -&gt; Int
+</span><a href="Main.html#atualizaPont"><span class="hs-identifier hs-var hs-var">atualizaPont</span></a></span></span><span> </span><span class="hs-number">0</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-number">0</span></span><span>
+</span><span id="line-158"></span><span class="annot"><a href="Main.html#atualizaPont"><span class="hs-identifier hs-var">atualizaPont</span></a></span><span> </span><span class="hs-number">1</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-number">100</span></span><span>
+</span><span id="line-159"></span><span class="annot"><a href="Main.html#atualizaPont"><span class="hs-identifier hs-var">atualizaPont</span></a></span><span> </span><span class="hs-number">2</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-number">250</span></span><span>
+</span><span id="line-160"></span><span class="annot"><a href="Main.html#atualizaPont"><span class="hs-identifier hs-var">atualizaPont</span></a></span><span> </span><span class="hs-number">3</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-number">500</span></span><span>
+</span><span id="line-161"></span><span class="annot"><a href="Main.html#atualizaPont"><span class="hs-identifier hs-var">atualizaPont</span></a></span><span> </span><span class="hs-number">4</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-number">1000</span></span><span>
+</span><span id="line-162"></span><span class="annot"><a href="Main.html#atualizaPont"><span class="hs-identifier hs-var">atualizaPont</span></a></span><span> </span><span class="hs-identifier">_</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-number">0</span></span><span>
+</span><span id="line-163"></span><span>
+</span><span id="line-164"></span><span>
+</span><span id="line-165"></span><span class="annot"><a href="Main.html#main"><span class="hs-identifier hs-type">main</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><span id="line-166"></span><span id="main"><span class="annot"><span class="annottext">main :: IO ()
+</span><a href="Main.html#main"><span class="hs-identifier hs-var hs-var">main</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-167"></span><span>  </span><span id="local-6989586621679052291"><span class="annot"><span class="annottext">[Tetramino]
+</span><a href="#local-6989586621679052291"><span class="hs-identifier hs-var">ps</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO [Tetramino]
+</span><a href="Main.html#listaPecas"><span class="hs-identifier hs-var">listaPecas</span></a></span><span>
+</span><span id="line-168"></span><span>  </span><span class="annot"><span class="annottext">Display
+-&gt; Color
+-&gt; Int
+-&gt; Mundo
+-&gt; (Mundo -&gt; Picture)
+-&gt; (Event -&gt; Mundo -&gt; Mundo)
+-&gt; (Float -&gt; Mundo -&gt; Mundo)
+-&gt; IO ()
+forall world.
+Display
+-&gt; Color
+-&gt; Int
+-&gt; world
+-&gt; (world -&gt; Picture)
+-&gt; (Event -&gt; world -&gt; world)
+-&gt; (Float -&gt; world -&gt; world)
+-&gt; IO ()
+</span><span class="hs-identifier hs-var">play</span></span><span>
+</span><span id="line-169"></span><span>    </span><span class="annot"><span class="annottext">Display
+</span><a href="#local-6989586621679052289"><span class="hs-identifier hs-var">janela</span></a></span><span>
+</span><span id="line-170"></span><span>    </span><span class="annot"><span class="annottext">Color
+</span><span class="hs-identifier hs-var">black</span></span><span>
+</span><span id="line-171"></span><span>    </span><span class="annot"><span class="hs-number">10</span></span><span>
+</span><span id="line-172"></span><span>    </span><span class="hs-special">(</span><span class="annot"><span class="annottext">[Tetramino] -&gt; Mundo
+</span><a href="Main.html#mundoInicial"><span class="hs-identifier hs-var">mundoInicial</span></a></span><span> </span><span class="annot"><span class="annottext">[Tetramino]
+</span><a href="#local-6989586621679052291"><span class="hs-identifier hs-var">ps</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-173"></span><span>    </span><span class="annot"><span class="annottext">Mundo -&gt; Picture
+</span><a href="Desenhos.html#desenhaMundo"><span class="hs-identifier hs-var">desenhaMundo</span></a></span><span>
+</span><span id="line-174"></span><span>    </span><span class="annot"><span class="annottext">Event -&gt; Mundo -&gt; Mundo
+</span><a href="Main.html#joga"><span class="hs-identifier hs-var">joga</span></a></span><span>
+</span><span id="line-175"></span><span>    </span><span class="annot"><span class="annottext">Float -&gt; Mundo -&gt; Mundo
+</span><a href="Main.html#atualizaMundo"><span class="hs-identifier hs-var">atualizaMundo</span></a></span><span>
+</span><span id="line-176"></span><span>    </span><span class="hs-keyword">where</span><span>
+</span><span id="line-177"></span><span>      </span><span id="local-6989586621679052289"><span class="annot"><span class="annottext">janela :: Display
+</span><a href="#local-6989586621679052289"><span class="hs-identifier hs-var hs-var">janela</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; (Int, Int) -&gt; (Int, Int) -&gt; Display
+</span><span class="hs-identifier hs-var">InWindow</span></span><span> </span><span class="annot"><span class="hs-string">&quot;Tetris&quot;</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-number">820</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-number">580</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-number">50</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-number">50</span></span><span class="hs-special">)</span><span>
+</span><span id="line-178"></span><span>
+</span><span id="line-179"></span></pre></body></html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span id="%24maxtag_7cJyK57DScE5VCHRhyZ0gK"><span id="%24tag2con_7cJyK57DScE5VCHRhyZ0gK"><span id="%24con2tag_7cJyK57DScE5VCHRhyZ0gK"></span></span></span><span class="hs-comment">{-|
+Module      : Database
+Description : Tipos de Dados utilizados para o jogo. 
+Copyright   : B&#225;rbara Dias de Sena, 2020
+License     : GPL-3
+Maintainer  : babi.dias.sena@hotmail.com
+Stability   : experimental
+Portability : GHC
+
+Cont&#233;m todos os tipos de dados que comp&#245;em o jogo.
+-}</span><span>
+</span><span id="line-12"></span><span>
+</span><span id="line-13"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Database</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-14"></span><span>
+</span><span id="line-15"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Graphics.Gloss</span></span><span>
+</span><span id="line-16"></span><span>
+</span><span id="line-17"></span><span>
+</span><span id="line-18"></span><span class="hs-comment">-- | Tamanho do lado de um bloco de pe&#231;a.</span><span>
+</span><span id="line-19"></span><span class="annot"><a href="Database.html#tam"><span class="hs-identifier hs-type">tam</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Float</span></span><span>
+</span><span id="line-20"></span><span id="tam"><span class="annot"><span class="annottext">tam :: Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var hs-var">tam</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-number">20</span></span><span>
+</span><span id="line-21"></span><span>
+</span><span id="line-22"></span><span>
+</span><span id="line-23"></span><span class="hs-comment">-- | Limites do jogo.</span><span>
+</span><span id="line-24"></span><span class="annot"><a href="Database.html#limiteX"><span class="hs-identifier hs-type">limiteX</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Database.html#limiteY"><span class="hs-identifier hs-type">limiteY</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Float</span></span><span>
+</span><span id="line-25"></span><span id="limiteX"><span class="annot"><span class="annottext">limiteX :: Float
+</span><a href="Database.html#limiteX"><span class="hs-identifier hs-var hs-var">limiteX</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-number">140</span></span><span>
+</span><span id="line-26"></span><span id="limiteY"><span class="annot"><span class="annottext">limiteY :: Float
+</span><a href="Database.html#limiteY"><span class="hs-identifier hs-var hs-var">limiteY</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-number">280</span></span><span>
+</span><span id="line-27"></span><span>
+</span><span id="line-28"></span><span>
+</span><span id="line-29"></span><span class="hs-comment">-- | Uma coordenada (x, y).</span><span>
+</span><span id="line-30"></span><span class="hs-keyword">type</span><span> </span><span id="Coord"><span class="annot"><a href="Database.html#Coord"><span class="hs-identifier hs-var">Coord</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Float</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Float</span></span><span class="hs-special">)</span><span>
+</span><span id="line-31"></span><span>
+</span><span id="line-32"></span><span>
+</span><span id="line-33"></span><span class="hs-comment">-- | Tipo da pe&#231;a baseado no Tetramin&#243;.</span><span>
+</span><span id="line-34"></span><span class="hs-keyword">data</span><span> </span><span id="Tetramino"><span class="annot"><a href="Database.html#Tetramino"><span class="hs-identifier hs-var">Tetramino</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="I"><span class="annot"><a href="Database.html#I"><span class="hs-identifier hs-var">I</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="L"><span class="annot"><a href="Database.html#L"><span class="hs-identifier hs-var">L</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="J"><span class="annot"><a href="Database.html#J"><span class="hs-identifier hs-var">J</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="T"><span class="annot"><a href="Database.html#T"><span class="hs-identifier hs-var">T</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="O"><span class="annot"><a href="Database.html#O"><span class="hs-identifier hs-var">O</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="Z"><span class="annot"><a href="Database.html#Z"><span class="hs-identifier hs-var">Z</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="S"><span class="annot"><a href="Database.html#S"><span class="hs-identifier hs-var">S</span></a></span></span><span>
+</span><span id="line-35"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679052197"><span id="local-6989586621679052199"><span class="annot"><span class="annottext">Tetramino -&gt; Tetramino -&gt; Bool
+(Tetramino -&gt; Tetramino -&gt; Bool)
+-&gt; (Tetramino -&gt; Tetramino -&gt; Bool) -&gt; Eq Tetramino
+forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
+/= :: Tetramino -&gt; Tetramino -&gt; Bool
+$c/= :: Tetramino -&gt; Tetramino -&gt; Bool
+== :: Tetramino -&gt; Tetramino -&gt; Bool
+$c== :: Tetramino -&gt; Tetramino -&gt; Bool
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679052180"><span id="local-6989586621679052182"><span id="local-6989586621679052184"><span id="local-6989586621679052186"><span id="local-6989586621679052188"><span id="local-6989586621679052190"><span id="local-6989586621679052192"><span id="local-6989586621679052194"><span class="annot"><span class="annottext">Int -&gt; Tetramino
+Tetramino -&gt; Int
+Tetramino -&gt; [Tetramino]
+Tetramino -&gt; Tetramino
+Tetramino -&gt; Tetramino -&gt; [Tetramino]
+Tetramino -&gt; Tetramino -&gt; Tetramino -&gt; [Tetramino]
+(Tetramino -&gt; Tetramino)
+-&gt; (Tetramino -&gt; Tetramino)
+-&gt; (Int -&gt; Tetramino)
+-&gt; (Tetramino -&gt; Int)
+-&gt; (Tetramino -&gt; [Tetramino])
+-&gt; (Tetramino -&gt; Tetramino -&gt; [Tetramino])
+-&gt; (Tetramino -&gt; Tetramino -&gt; [Tetramino])
+-&gt; (Tetramino -&gt; Tetramino -&gt; Tetramino -&gt; [Tetramino])
+-&gt; Enum Tetramino
+forall a.
+(a -&gt; a)
+-&gt; (a -&gt; a)
+-&gt; (Int -&gt; a)
+-&gt; (a -&gt; Int)
+-&gt; (a -&gt; [a])
+-&gt; (a -&gt; a -&gt; [a])
+-&gt; (a -&gt; a -&gt; [a])
+-&gt; (a -&gt; a -&gt; a -&gt; [a])
+-&gt; Enum a
+enumFromThenTo :: Tetramino -&gt; Tetramino -&gt; Tetramino -&gt; [Tetramino]
+$cenumFromThenTo :: Tetramino -&gt; Tetramino -&gt; Tetramino -&gt; [Tetramino]
+enumFromTo :: Tetramino -&gt; Tetramino -&gt; [Tetramino]
+$cenumFromTo :: Tetramino -&gt; Tetramino -&gt; [Tetramino]
+enumFromThen :: Tetramino -&gt; Tetramino -&gt; [Tetramino]
+$cenumFromThen :: Tetramino -&gt; Tetramino -&gt; [Tetramino]
+enumFrom :: Tetramino -&gt; [Tetramino]
+$cenumFrom :: Tetramino -&gt; [Tetramino]
+fromEnum :: Tetramino -&gt; Int
+$cfromEnum :: Tetramino -&gt; Int
+toEnum :: Int -&gt; Tetramino
+$ctoEnum :: Int -&gt; Tetramino
+pred :: Tetramino -&gt; Tetramino
+$cpred :: Tetramino -&gt; Tetramino
+succ :: Tetramino -&gt; Tetramino
+$csucc :: Tetramino -&gt; Tetramino
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></span></span></span></span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-36"></span><span>
+</span><span id="line-37"></span><span>
+</span><span id="line-38"></span><span class="hs-comment">-- | Cada pe&#231;a &#233; composta por um tipo (Tetramin&#243;), uma cor, um foco e os blocos que a comp&#245;em.</span><span>
+</span><span id="line-39"></span><span class="hs-keyword">data</span><span> </span><span id="Peca"><span class="annot"><a href="Database.html#Peca"><span class="hs-identifier hs-var">Peca</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Peca"><span class="annot"><a href="Database.html#Peca"><span class="hs-identifier hs-var">Peca</span></a></span></span><span> </span><span class="hs-special">{</span><span> </span><span id="tipo"><span class="annot"><span class="annottext">Peca -&gt; Tetramino
+</span><a href="Database.html#tipo"><span class="hs-identifier hs-var hs-var">tipo</span></a></span></span><span>       </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Database.html#Tetramino"><span class="hs-identifier hs-type">Tetramino</span></a></span><span>
+</span><span id="line-40"></span><span>                 </span><span class="hs-special">,</span><span> </span><span id="cor"><span class="annot"><span class="annottext">Peca -&gt; Color
+</span><a href="Database.html#cor"><span class="hs-identifier hs-var hs-var">cor</span></a></span></span><span>        </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Color</span></span><span>
+</span><span id="line-41"></span><span>                 </span><span class="hs-special">,</span><span> </span><span id="foco"><span class="annot"><span class="annottext">Peca -&gt; Coord
+</span><a href="Database.html#foco"><span class="hs-identifier hs-var hs-var">foco</span></a></span></span><span>       </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Database.html#Coord"><span class="hs-identifier hs-type">Coord</span></a></span><span>
+</span><span id="line-42"></span><span>                 </span><span class="hs-special">,</span><span> </span><span id="blocosPeca"><span class="annot"><span class="annottext">Peca -&gt; [Coord]
+</span><a href="Database.html#blocosPeca"><span class="hs-identifier hs-var hs-var">blocosPeca</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Database.html#Coord"><span class="hs-identifier hs-type">Coord</span></a></span><span class="hs-special">]</span><span> </span><span class="hs-special">}</span><span>
+</span><span id="line-43"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679052170"><span id="local-6989586621679052172"><span class="annot"><span class="annottext">Peca -&gt; Peca -&gt; Bool
+(Peca -&gt; Peca -&gt; Bool) -&gt; (Peca -&gt; Peca -&gt; Bool) -&gt; Eq Peca
+forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
+/= :: Peca -&gt; Peca -&gt; Bool
+$c/= :: Peca -&gt; Peca -&gt; Bool
+== :: Peca -&gt; Peca -&gt; Bool
+$c== :: Peca -&gt; Peca -&gt; Bool
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span>
+</span><span id="line-44"></span><span>
+</span><span id="line-45"></span><span>
+</span><span id="line-46"></span><span class="hs-comment">-- | Um mundo &#233; composto por seus blocos, uma pe&#231;a ativa, uma lista de pr&#243;ximas pe&#231;as,</span><span>
+</span><span id="line-47"></span><span class="hs-comment">-- pontua&#231;&#227;o do jogo, um timer para aplicar a gravidade na pe&#231;a, </span><span>
+</span><span id="line-48"></span><span class="hs-comment">-- a quantidade de fileiras que foram completas na jogada, e uma flag de fim de jogo.</span><span>
+</span><span id="line-49"></span><span class="hs-keyword">data</span><span> </span><span id="Mundo"><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-var">Mundo</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Mundo"><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-var">Mundo</span></a></span></span><span> </span><span class="hs-special">{</span><span> </span><span id="blocosPintados"><span class="annot"><span class="annottext">Mundo -&gt; [(Coord, Color)]
+</span><a href="Database.html#blocosPintados"><span class="hs-identifier hs-var hs-var">blocosPintados</span></a></span></span><span>    </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="hs-special">(</span><span class="annot"><a href="Database.html#Coord"><span class="hs-identifier hs-type">Coord</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Color</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-50"></span><span>                   </span><span class="hs-special">,</span><span> </span><span id="pecaAtual"><span class="annot"><span class="annottext">Mundo -&gt; Peca
+</span><a href="Database.html#pecaAtual"><span class="hs-identifier hs-var hs-var">pecaAtual</span></a></span></span><span>         </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Database.html#Peca"><span class="hs-identifier hs-type">Peca</span></a></span><span>
+</span><span id="line-51"></span><span>                   </span><span class="hs-special">,</span><span> </span><span id="proxPecas"><span class="annot"><span class="annottext">Mundo -&gt; [Tetramino]
+</span><a href="Database.html#proxPecas"><span class="hs-identifier hs-var hs-var">proxPecas</span></a></span></span><span>         </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Database.html#Tetramino"><span class="hs-identifier hs-type">Tetramino</span></a></span><span class="hs-special">]</span><span>
+</span><span id="line-52"></span><span>                   </span><span class="hs-special">,</span><span> </span><span id="pontuacao"><span class="annot"><span class="annottext">Mundo -&gt; Int
+</span><a href="Database.html#pontuacao"><span class="hs-identifier hs-var hs-var">pontuacao</span></a></span></span><span>         </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span>
+</span><span id="line-53"></span><span>                   </span><span class="hs-special">,</span><span> </span><span id="timer"><span class="annot"><span class="annottext">Mundo -&gt; Int
+</span><a href="Database.html#timer"><span class="hs-identifier hs-var hs-var">timer</span></a></span></span><span>             </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span>
+</span><span id="line-54"></span><span>                   </span><span class="hs-special">,</span><span> </span><span id="fileirasCompletas"><span class="annot"><span class="annottext">Mundo -&gt; Int
+</span><a href="Database.html#fileirasCompletas"><span class="hs-identifier hs-var hs-var">fileirasCompletas</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span>
+</span><span id="line-55"></span><span>                   </span><span class="hs-special">,</span><span> </span><span id="gameOver"><span class="annot"><span class="annottext">Mundo -&gt; Bool
+</span><a href="Database.html#gameOver"><span class="hs-identifier hs-var hs-var">gameOver</span></a></span></span><span>          </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Bool</span></span><span> </span><span class="hs-special">}</span><span>
+</span><span id="line-56"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679052158"><span id="local-6989586621679052160"><span class="annot"><span class="annottext">Mundo -&gt; Mundo -&gt; Bool
+(Mundo -&gt; Mundo -&gt; Bool) -&gt; (Mundo -&gt; Mundo -&gt; Bool) -&gt; Eq Mundo
+forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
+/= :: Mundo -&gt; Mundo -&gt; Bool
+$c/= :: Mundo -&gt; Mundo -&gt; Bool
+== :: Mundo -&gt; Mundo -&gt; Bool
+$c== :: Mundo -&gt; Mundo -&gt; Bool
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span>
+</span><span id="line-57"></span><span>
+</span><span id="line-58"></span><span>
+</span><span id="line-59"></span><span class="hs-comment">-- | A dire&#231;&#227;o do movimento pode ser para esquerda, para direita, </span><span>
+</span><span id="line-60"></span><span class="hs-comment">-- para baixo ou rota&#231;&#227;o da pe&#231;a.</span><span>
+</span><span id="line-61"></span><span class="hs-keyword">data</span><span> </span><span id="Direcao"><span class="annot"><a href="Database.html#Direcao"><span class="hs-identifier hs-var">Direcao</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Dir"><span class="annot"><a href="Database.html#Dir"><span class="hs-identifier hs-var">Dir</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="Esq"><span class="annot"><a href="Database.html#Esq"><span class="hs-identifier hs-var">Esq</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="Baixo"><span class="annot"><a href="Database.html#Baixo"><span class="hs-identifier hs-var">Baixo</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="Rotaciona"><span class="annot"><a href="Database.html#Rotaciona"><span class="hs-identifier hs-var">Rotaciona</span></a></span></span><span>
+</span><span id="line-62"></span><span>
+</span><span id="line-63"></span><span>
+</span><span id="line-64"></span><span class="hs-comment">-- | Cria uma pe&#231;a nova de acordo com o tipo.</span><span>
+</span><span id="line-65"></span><span class="annot"><a href="Database.html#criaPeca"><span class="hs-identifier hs-type">criaPeca</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Database.html#Tetramino"><span class="hs-identifier hs-type">Tetramino</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Database.html#Peca"><span class="hs-identifier hs-type">Peca</span></a></span><span>
+</span><span id="line-66"></span><span id="criaPeca"><span class="annot"><span class="annottext">criaPeca :: Tetramino -&gt; Peca
+</span><a href="Database.html#criaPeca"><span class="hs-identifier hs-var hs-var">criaPeca</span></a></span></span><span> </span><span id="local-6989586621679052151"><span class="annot"><span class="annottext">t :: Tetramino
+</span><a href="#local-6989586621679052151"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span>
+</span><span id="line-67"></span><span>  </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="#local-6989586621679052151"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><span id="line-68"></span><span>    </span><span class="annot"><a href="Database.html#I"><span class="hs-identifier hs-type">I</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Color -&gt; Coord -&gt; [Coord] -&gt; Peca
+</span><a href="Database.html#Peca"><span class="hs-identifier hs-var">Peca</span></a></span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="Database.html#I"><span class="hs-identifier hs-var">I</span></a></span><span> </span><span class="annot"><span class="annottext">Color
+</span><span class="hs-identifier hs-var">cyan</span></span><span>   </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">,</span><span>   </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="hs-number">2</span></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">*</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-69"></span><span>    </span><span class="annot"><a href="Database.html#L"><span class="hs-identifier hs-type">L</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Color -&gt; Coord -&gt; [Coord] -&gt; Peca
+</span><a href="Database.html#Peca"><span class="hs-identifier hs-var">Peca</span></a></span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="Database.html#L"><span class="hs-identifier hs-var">L</span></a></span><span> </span><span class="annot"><span class="annottext">Color
+</span><span class="hs-identifier hs-var">orange</span></span><span> </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-70"></span><span>    </span><span class="annot"><a href="Database.html#J"><span class="hs-identifier hs-type">J</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Color -&gt; Coord -&gt; [Coord] -&gt; Peca
+</span><a href="Database.html#Peca"><span class="hs-identifier hs-var">Peca</span></a></span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="Database.html#J"><span class="hs-identifier hs-var">J</span></a></span><span> </span><span class="annot"><span class="annottext">Color
+</span><span class="hs-identifier hs-var">blue</span></span><span>   </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-71"></span><span>    </span><span class="annot"><a href="Database.html#T"><span class="hs-identifier hs-type">T</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Color -&gt; Coord -&gt; [Coord] -&gt; Peca
+</span><a href="Database.html#Peca"><span class="hs-identifier hs-var">Peca</span></a></span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="Database.html#T"><span class="hs-identifier hs-var">T</span></a></span><span> </span><span class="annot"><span class="annottext">Color
+</span><span class="hs-identifier hs-var">violet</span></span><span> </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span>    </span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-72"></span><span>    </span><span class="annot"><a href="Database.html#O"><span class="hs-identifier hs-type">O</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Color -&gt; Coord -&gt; [Coord] -&gt; Peca
+</span><a href="Database.html#Peca"><span class="hs-identifier hs-var">Peca</span></a></span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="Database.html#O"><span class="hs-identifier hs-var">O</span></a></span><span> </span><span class="annot"><span class="annottext">Color
+</span><span class="hs-identifier hs-var">yellow</span></span><span> </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-73"></span><span>    </span><span class="annot"><a href="Database.html#Z"><span class="hs-identifier hs-type">Z</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Color -&gt; Coord -&gt; [Coord] -&gt; Peca
+</span><a href="Database.html#Peca"><span class="hs-identifier hs-var">Peca</span></a></span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="Database.html#Z"><span class="hs-identifier hs-var">Z</span></a></span><span> </span><span class="annot"><span class="annottext">Color
+</span><span class="hs-identifier hs-var">red</span></span><span>    </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-74"></span><span>    </span><span class="annot"><a href="Database.html#S"><span class="hs-identifier hs-type">S</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Color -&gt; Coord -&gt; [Coord] -&gt; Peca
+</span><a href="Database.html#Peca"><span class="hs-identifier hs-var">Peca</span></a></span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="Database.html#S"><span class="hs-identifier hs-var">S</span></a></span><span> </span><span class="annot"><span class="annottext">Color
+</span><span class="hs-identifier hs-var">green</span></span><span>  </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-75"></span><span>    </span><span class="hs-keyword">where</span><span> </span><span id="local-6989586621679052149"><span class="annot"><span class="annottext">f :: Coord
+</span><a href="#local-6989586621679052149"><span class="hs-identifier hs-var">f</span></a></span></span><span class="hs-glyph">@</span><span class="hs-special">(</span><span id="local-6989586621679052148"><span class="annot"><span class="annottext">x :: Float
+</span><a href="#local-6989586621679052148"><span class="hs-identifier hs-var">x</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679052147"><span class="annot"><span class="annottext">y :: Float
+</span><a href="#local-6989586621679052147"><span class="hs-identifier hs-var">y</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-number">0</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052138"><span class="hs-identifier hs-var">y'</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-76"></span><span>          </span><span id="local-6989586621679052138"><span class="annot"><span class="annottext">y' :: Float
+</span><a href="#local-6989586621679052138"><span class="hs-identifier hs-var hs-var">y'</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="#local-6989586621679052151"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Tetramino -&gt; Bool
+forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">==</span></span><span> </span><span class="annot"><span class="annottext">Tetramino
+</span><a href="Database.html#T"><span class="hs-identifier hs-var">T</span></a></span><span>
+</span><span id="line-77"></span><span>                  </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="hs-number">300</span></span><span>
+</span><span id="line-78"></span><span>                  </span><span class="hs-keyword">else</span><span> </span><span class="annot"><span class="hs-number">320</span></span><span>
+</span><span id="line-79"></span><span>
+</span><span id="line-80"></span><span>
+</span><span id="line-81"></span></pre></body></html>

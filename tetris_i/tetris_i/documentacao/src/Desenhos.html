@@ -1,0 +1,428 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-comment">{-|
+Module      : Desenhos
+Description : Fun&#231;&#245;es que desenham o jogo na tela. 
+Copyright   : B&#225;rbara Dias de Sena, 2020
+License     : GPL-3
+Maintainer  : babi.dias.sena@hotmail.com
+Stability   : experimental
+Portability : GHC
+
+Cont&#233;m todas as fun&#231;&#245;es que desenham o jogo, isto &#233;, todas as fun&#231;&#245;es que retornam uma Picture.
+-}</span><span>
+</span><span id="line-12"></span><span>
+</span><span id="line-13"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Desenhos</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-14"></span><span>
+</span><span id="line-15"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Graphics.Gloss</span></span><span>
+</span><span id="line-16"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="Database.html"><span class="hs-identifier">Database</span></a></span><span>
+</span><span id="line-17"></span><span>
+</span><span id="line-18"></span><span class="hs-comment">-- | Desenha um &#250;nico bloco na tela.</span><span>
+</span><span id="line-19"></span><span class="annot"><a href="Desenhos.html#desenhaBloco"><span class="hs-identifier hs-type">desenhaBloco</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Color</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Database.html#Coord"><span class="hs-identifier hs-type">Coord</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Picture</span></span><span>
+</span><span id="line-20"></span><span id="desenhaBloco"><span class="annot"><span class="annottext">desenhaBloco :: Color -&gt; Coord -&gt; Picture
+</span><a href="Desenhos.html#desenhaBloco"><span class="hs-identifier hs-var hs-var">desenhaBloco</span></a></span></span><span> </span><span id="local-6989586621679052268"><span class="annot"><span class="annottext">c :: Color
+</span><a href="#local-6989586621679052268"><span class="hs-identifier hs-var">c</span></a></span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679052267"><span class="annot"><span class="annottext">x :: Float
+</span><a href="#local-6989586621679052267"><span class="hs-identifier hs-var">x</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679052266"><span class="annot"><span class="annottext">y :: Float
+</span><a href="#local-6989586621679052266"><span class="hs-identifier hs-var">y</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052267"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052266"><span class="hs-identifier hs-var">y</span></a></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">[Picture] -&gt; Picture
+</span><span class="hs-identifier hs-var">pictures</span></span><span> </span><span class="hs-special">[</span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="annot"><span class="annottext">Color
+</span><a href="#local-6989586621679052268"><span class="hs-identifier hs-var">c</span></a></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture
+</span><span class="hs-identifier hs-var">rectangleSolid</span></span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span>
+</span><span id="line-21"></span><span>                                                 </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.3</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture
+</span><span class="hs-identifier hs-var">rectangleWire</span></span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="Database.html#tam"><span class="hs-identifier hs-var">tam</span></a></span><span class="hs-special">]</span><span>
+</span><span id="line-22"></span><span>
+</span><span id="line-23"></span><span>
+</span><span id="line-24"></span><span class="hs-comment">-- | Desenha uma pe&#231;a na tela.</span><span>
+</span><span id="line-25"></span><span class="annot"><a href="Desenhos.html#desenhaPeca"><span class="hs-identifier hs-type">desenhaPeca</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Database.html#Peca"><span class="hs-identifier hs-type">Peca</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Picture</span></span><span>
+</span><span id="line-26"></span><span id="desenhaPeca"><span class="annot"><span class="annottext">desenhaPeca :: Peca -&gt; Picture
+</span><a href="Desenhos.html#desenhaPeca"><span class="hs-identifier hs-var hs-var">desenhaPeca</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Database.html#Peca"><span class="hs-identifier hs-type">Peca</span></a></span><span> </span><span class="hs-identifier">_</span><span> </span><span id="local-6989586621679052256"><span class="annot"><span class="annottext">c :: Color
+</span><a href="#local-6989586621679052256"><span class="hs-identifier hs-var">c</span></a></span></span><span> </span><span class="hs-identifier">_</span><span> </span><span id="local-6989586621679052255"><span class="annot"><span class="annottext">bs :: [Coord]
+</span><a href="#local-6989586621679052255"><span class="hs-identifier hs-var">bs</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[Picture] -&gt; Picture
+</span><span class="hs-identifier hs-var">pictures</span></span><span> </span><span class="annot"><span class="annottext">([Picture] -&gt; Picture) -&gt; [Picture] -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">(Coord -&gt; Picture) -&gt; [Coord] -&gt; [Picture]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Color -&gt; Coord -&gt; Picture
+</span><a href="Desenhos.html#desenhaBloco"><span class="hs-identifier hs-var">desenhaBloco</span></a></span><span> </span><span class="annot"><span class="annottext">Color
+</span><a href="#local-6989586621679052256"><span class="hs-identifier hs-var">c</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Coord]
+</span><a href="#local-6989586621679052255"><span class="hs-identifier hs-var">bs</span></a></span><span>
+</span><span id="line-27"></span><span>
+</span><span id="line-28"></span><span>
+</span><span id="line-29"></span><span class="hs-comment">-- | Desenha uma seta do teclado.</span><span>
+</span><span id="line-30"></span><span class="annot"><a href="Desenhos.html#seta"><span class="hs-identifier hs-type">seta</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Picture</span></span><span>
+</span><span id="line-31"></span><span id="seta"><span class="annot"><span class="annottext">seta :: Picture
+</span><a href="Desenhos.html#seta"><span class="hs-identifier hs-var hs-var">seta</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[Picture] -&gt; Picture
+</span><span class="hs-identifier hs-var">pictures</span></span><span> </span><span class="annot"><span class="annottext">([Picture] -&gt; Picture) -&gt; [Picture] -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.2</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture
+</span><span class="hs-identifier hs-var">rectangleSolid</span></span><span> </span><span class="annot"><span class="hs-number">30</span></span><span> </span><span class="annot"><span class="hs-number">30</span></span><span class="hs-special">]</span><span>
+</span><span id="line-32"></span><span>               </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="annot"><span class="annottext">Color
+</span><span class="hs-identifier hs-var">black</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">[Coord] -&gt; Picture
+</span><span class="hs-identifier hs-var">line</span></span><span> </span><span class="hs-special">[</span><span class="hs-special">(</span><span class="annot"><span class="hs-number">0</span></span><span class="hs-special">,</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">10</span></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-number">0</span></span><span class="hs-special">,</span><span class="annot"><span class="hs-number">10</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span class="hs-special">]</span><span>
+</span><span id="line-33"></span><span>               </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="annot"><span class="annottext">Color
+</span><span class="hs-identifier hs-var">black</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">[Coord] -&gt; Picture
+</span><span class="hs-identifier hs-var">polygon</span></span><span> </span><span class="hs-special">[</span><span class="hs-special">(</span><span class="annot"><span class="hs-number">5</span></span><span class="hs-special">,</span><span class="annot"><span class="hs-number">0</span></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-number">0</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-number">10</span></span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">5</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-number">0</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span class="hs-special">]</span><span>
+</span><span id="line-34"></span><span>
+</span><span id="line-35"></span><span>
+</span><span id="line-36"></span><span class="hs-comment">-- | Desenha as instru&#231;&#245;es do jogo na tela.</span><span>
+</span><span id="line-37"></span><span class="annot"><a href="Desenhos.html#instrucoes"><span class="hs-identifier hs-type">instrucoes</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Picture</span></span><span>
+</span><span id="line-38"></span><span id="instrucoes"><span class="annot"><span class="annottext">instrucoes :: Picture
+</span><a href="Desenhos.html#instrucoes"><span class="hs-identifier hs-var hs-var">instrucoes</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[Picture] -&gt; Picture
+</span><span class="hs-identifier hs-var">pictures</span></span><span> </span><span class="annot"><span class="annottext">([Picture] -&gt; Picture) -&gt; [Picture] -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">280</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">25</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Picture
+</span><a href="Desenhos.html#seta"><span class="hs-identifier hs-var">seta</span></a></span><span class="hs-special">]</span><span>
+</span><span id="line-39"></span><span>                     </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">315</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">60</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">rotate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">90</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Picture
+</span><a href="Desenhos.html#seta"><span class="hs-identifier hs-var">seta</span></a></span><span class="hs-special">]</span><span>
+</span><span id="line-40"></span><span>                     </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">280</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">60</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">rotate</span></span><span> </span><span class="annot"><span class="hs-number">180</span></span><span> </span><span class="annot"><span class="annottext">Picture
+</span><a href="Desenhos.html#seta"><span class="hs-identifier hs-var">seta</span></a></span><span class="hs-special">]</span><span>
+</span><span id="line-41"></span><span>                     </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">245</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">60</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">rotate</span></span><span> </span><span class="annot"><span class="hs-number">90</span></span><span> </span><span class="annot"><span class="annottext">Picture
+</span><a href="Desenhos.html#seta"><span class="hs-identifier hs-var">seta</span></a></span><span class="hs-special">]</span><span>
+</span><span id="line-42"></span><span>                     </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">280</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">180</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.2</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture
+</span><span class="hs-identifier hs-var">rectangleSolid</span></span><span> </span><span class="annot"><span class="hs-number">180</span></span><span> </span><span class="annot"><span class="hs-number">30</span></span><span class="hs-special">]</span><span>
+</span><span id="line-43"></span><span>                     </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">355</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">190</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">scale</span></span><span> </span><span class="annot"><span class="hs-number">0.14</span></span><span> </span><span class="annot"><span class="hs-number">0.14</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="annot"><span class="annottext">Color
+</span><span class="hs-identifier hs-var">black</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; Picture
+</span><span class="hs-identifier hs-var">Text</span></span><span> </span><span class="annot"><span class="hs-string">&quot;Barra de espaco&quot;</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-44"></span><span>                     </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">405</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">55</span></span><span class="hs-special">)</span><span>  </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">scale</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.5</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; Picture
+</span><span class="hs-identifier hs-var">Text</span></span><span> </span><span class="annot"><span class="hs-string">&quot;Move para&quot;</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-45"></span><span>                     </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">400</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">70</span></span><span class="hs-special">)</span><span>  </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">scale</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.5</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; Picture
+</span><span class="hs-identifier hs-var">Text</span></span><span> </span><span class="annot"><span class="hs-string">&quot;esquerda&quot;</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-46"></span><span>                     </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">222</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">55</span></span><span class="hs-special">)</span><span>  </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">scale</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.5</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; Picture
+</span><span class="hs-identifier hs-var">Text</span></span><span> </span><span class="annot"><span class="hs-string">&quot;Move para&quot;</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-47"></span><span>                     </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">210</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">70</span></span><span class="hs-special">)</span><span>  </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">scale</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.5</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; Picture
+</span><span class="hs-identifier hs-var">Text</span></span><span> </span><span class="annot"><span class="hs-string">&quot;direita&quot;</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-48"></span><span>                     </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">310</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="hs-number">10</span></span><span>     </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">scale</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.5</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; Picture
+</span><span class="hs-identifier hs-var">Text</span></span><span> </span><span class="annot"><span class="hs-string">&quot;Rotaciona&quot;</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-49"></span><span>                     </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">295</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">5</span></span><span class="hs-special">)</span><span>   </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">scale</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.5</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; Picture
+</span><span class="hs-identifier hs-var">Text</span></span><span> </span><span class="annot"><span class="hs-string">&quot;peca&quot;</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-50"></span><span>                     </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">315</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">90</span></span><span class="hs-special">)</span><span>  </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">scale</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.5</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; Picture
+</span><span class="hs-identifier hs-var">Text</span></span><span> </span><span class="annot"><span class="hs-string">&quot;Move para&quot;</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-51"></span><span>                     </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">295</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">105</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">scale</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.5</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; Picture
+</span><span class="hs-identifier hs-var">Text</span></span><span> </span><span class="annot"><span class="hs-string">&quot;baixo&quot;</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-52"></span><span>                     </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">345</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">210</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">scale</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="hs-number">0.1</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.5</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; Picture
+</span><span class="hs-identifier hs-var">Text</span></span><span> </span><span class="annot"><span class="hs-string">&quot;Move para o fundo&quot;</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-53"></span><span>
+</span><span id="line-54"></span><span>
+</span><span id="line-55"></span><span class="hs-comment">-- | Desenha o quadro de fim de jogo na tela.</span><span>
+</span><span id="line-56"></span><span class="annot"><a href="Desenhos.html#gameOverTela"><span class="hs-identifier hs-type">gameOverTela</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-type">Mundo</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Picture</span></span><span>
+</span><span id="line-57"></span><span id="gameOverTela"><span class="annot"><span class="annottext">gameOverTela :: Mundo -&gt; Picture
+</span><a href="Desenhos.html#gameOverTela"><span class="hs-identifier hs-var hs-var">gameOverTela</span></a></span></span><span> </span><span id="local-6989586621679052245"><span class="annot"><span class="annottext">m :: Mundo
+</span><a href="#local-6989586621679052245"><span class="hs-identifier hs-var">m</span></a></span></span><span>
+</span><span id="line-58"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; Bool
+</span><a href="Database.html#gameOver"><span class="hs-identifier hs-var hs-var">gameOver</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052245"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[Picture] -&gt; Picture
+</span><span class="hs-identifier hs-var">pictures</span></span><span> </span><span class="annot"><span class="annottext">([Picture] -&gt; Picture) -&gt; [Picture] -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.2</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture
+</span><span class="hs-identifier hs-var">rectangleSolid</span></span><span> </span><span class="annot"><span class="hs-number">580</span></span><span> </span><span class="annot"><span class="hs-number">300</span></span><span class="hs-special">]</span><span>
+</span><span id="line-59"></span><span>                         </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.4</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture
+</span><span class="hs-identifier hs-var">rectangleWire</span></span><span> </span><span class="annot"><span class="hs-number">580</span></span><span> </span><span class="annot"><span class="hs-number">300</span></span><span class="hs-special">]</span><span>
+</span><span id="line-60"></span><span>                         </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">220</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="hs-number">40</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">scale</span></span><span> </span><span class="annot"><span class="hs-number">0.55</span></span><span> </span><span class="annot"><span class="hs-number">0.55</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="annot"><span class="annottext">Color
+</span><span class="hs-identifier hs-var">red</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; Picture
+</span><span class="hs-identifier hs-var">Text</span></span><span> </span><span class="annot"><span class="hs-string">&quot;Voce perdeu!&quot;</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-61"></span><span>                         </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">200</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">60</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">scale</span></span><span> </span><span class="annot"><span class="hs-number">0.3</span></span><span> </span><span class="annot"><span class="hs-number">0.3</span></span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="annot"><span class="annottext">Color
+</span><span class="hs-identifier hs-var">white</span></span><span>
+</span><span id="line-62"></span><span>                                                                   </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; Picture
+</span><span class="hs-identifier hs-var">Text</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-string">&quot;Pontuacao final: &quot;</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; String
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; String
+forall a. Show a =&gt; a -&gt; String
+</span><span class="hs-identifier hs-var">show</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Mundo -&gt; Int
+</span><a href="Database.html#pontuacao"><span class="hs-identifier hs-var hs-var">pontuacao</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052245"><span class="hs-identifier hs-var">m</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-63"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Bool
+</span><span class="hs-identifier hs-var">otherwise</span></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Picture
+</span><span class="hs-identifier hs-var">blank</span></span><span>
+</span><span id="line-64"></span><span>
+</span><span id="line-65"></span><span>
+</span><span id="line-66"></span><span class="hs-comment">-- | Desenha o mundo atual.</span><span>
+</span><span id="line-67"></span><span class="annot"><a href="Desenhos.html#desenhaMundo"><span class="hs-identifier hs-type">desenhaMundo</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Database.html#Mundo"><span class="hs-identifier hs-type">Mundo</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Picture</span></span><span>
+</span><span id="line-68"></span><span id="desenhaMundo"><span class="annot"><span class="annottext">desenhaMundo :: Mundo -&gt; Picture
+</span><a href="Desenhos.html#desenhaMundo"><span class="hs-identifier hs-var hs-var">desenhaMundo</span></a></span></span><span> </span><span id="local-6989586621679052237"><span class="annot"><span class="annottext">m :: Mundo
+</span><a href="#local-6989586621679052237"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[Picture] -&gt; Picture
+</span><span class="hs-identifier hs-var">pictures</span></span><span> </span><span class="annot"><span class="annottext">([Picture] -&gt; Picture) -&gt; [Picture] -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">((Coord, Color) -&gt; Picture) -&gt; [(Coord, Color)] -&gt; [Picture]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">\</span><span class="hs-special">(</span><span id="local-6989586621679052236"><span class="annot"><span class="annottext">x :: Coord
+</span><a href="#local-6989586621679052236"><span class="hs-identifier hs-var">x</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679052235"><span class="annot"><span class="annottext">y :: Color
+</span><a href="#local-6989586621679052235"><span class="hs-identifier hs-var">y</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Color -&gt; Coord -&gt; Picture
+</span><a href="Desenhos.html#desenhaBloco"><span class="hs-identifier hs-var">desenhaBloco</span></a></span><span> </span><span class="annot"><span class="annottext">Color
+</span><a href="#local-6989586621679052235"><span class="hs-identifier hs-var">y</span></a></span><span> </span><span class="annot"><span class="annottext">Coord
+</span><a href="#local-6989586621679052236"><span class="hs-identifier hs-var">x</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Mundo -&gt; [(Coord, Color)]
+</span><a href="Database.html#blocosPintados"><span class="hs-identifier hs-var hs-var">blocosPintados</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052237"><span class="hs-identifier hs-var">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-comment">-- blocos do jogo</span><span>
+</span><span id="line-69"></span><span>                         </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.5</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture
+</span><span class="hs-identifier hs-var">rectangleWire</span></span><span> </span><span class="annot"><span class="hs-number">300</span></span><span> </span><span class="annot"><span class="hs-number">580</span></span><span class="hs-special">]</span><span>          </span><span class="hs-comment">-- borda</span><span>
+</span><span id="line-70"></span><span>                         </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Peca -&gt; Picture
+</span><a href="Desenhos.html#desenhaPeca"><span class="hs-identifier hs-var">desenhaPeca</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052233"><span class="hs-identifier hs-var">proxP</span></a></span><span class="hs-special">]</span><span>                                  </span><span class="hs-comment">-- proxima pe&#231;a</span><span>
+</span><span id="line-71"></span><span>                         </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">-</span><span class="annot"><span class="hs-number">400</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="hs-number">200</span></span><span> </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">scale</span></span><span> </span><span class="annot"><span class="hs-number">0.2</span></span><span> </span><span class="annot"><span class="hs-number">0.2</span></span><span>                </span><span class="hs-comment">-- pontua&#231;&#227;o</span><span>
+</span><span id="line-72"></span><span>                                                  </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.5</span></span><span class="hs-special">)</span><span>
+</span><span id="line-73"></span><span>                                                  </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; Picture
+</span><span class="hs-identifier hs-var">Text</span></span><span> </span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679052232"><span class="hs-identifier hs-var">pont</span></a></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-74"></span><span>                         </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">translate</span></span><span> </span><span class="annot"><span class="hs-number">160</span></span><span> </span><span class="annot"><span class="hs-number">200</span></span><span> </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">scale</span></span><span> </span><span class="annot"><span class="hs-number">0.2</span></span><span> </span><span class="annot"><span class="hs-number">0.2</span></span><span>                   </span><span class="hs-comment">-- texto &quot;Proxima pe&#231;a&quot;</span><span>
+</span><span id="line-75"></span><span>                                               </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Color -&gt; Picture -&gt; Picture
+</span><span class="hs-identifier hs-var">color</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float -&gt; Color
+</span><span class="hs-identifier hs-var">greyN</span></span><span> </span><span class="annot"><span class="hs-number">0.5</span></span><span class="hs-special">)</span><span>
+</span><span id="line-76"></span><span>                                               </span><span class="annot"><span class="annottext">(Picture -&gt; Picture) -&gt; Picture -&gt; Picture
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; Picture
+</span><span class="hs-identifier hs-var">Text</span></span><span> </span><span class="annot"><span class="hs-string">&quot;Proxima peca:&quot;</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span>
+</span><span id="line-77"></span><span>                         </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Picture
+</span><a href="Desenhos.html#instrucoes"><span class="hs-identifier hs-var">instrucoes</span></a></span><span class="hs-special">]</span><span>                                         </span><span class="hs-comment">-- instru&#231;&#245;es</span><span>
+</span><span id="line-78"></span><span>                         </span><span class="annot"><span class="annottext">[Picture] -&gt; [Picture] -&gt; [Picture]
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Mundo -&gt; Picture
+</span><a href="Desenhos.html#gameOverTela"><span class="hs-identifier hs-var">gameOverTela</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052237"><span class="hs-identifier hs-var">m</span></a></span><span class="hs-special">]</span><span>                                     </span><span class="hs-comment">-- tela final</span><span>
+</span><span id="line-79"></span><span>  </span><span class="hs-keyword">where</span><span> </span><span id="local-6989586621679052233"><span class="annot"><span class="annottext">proxP :: Peca
+</span><a href="#local-6989586621679052233"><span class="hs-identifier hs-var hs-var">proxP</span></a></span></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Color -&gt; Coord -&gt; [Coord] -&gt; Peca
+</span><a href="Database.html#Peca"><span class="hs-identifier hs-var">Peca</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Peca -&gt; Tetramino
+</span><a href="Database.html#tipo"><span class="hs-identifier hs-var hs-var">tipo</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052230"><span class="hs-identifier hs-var">proxP'</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Peca -&gt; Color
+</span><a href="Database.html#cor"><span class="hs-identifier hs-var hs-var">cor</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052230"><span class="hs-identifier hs-var">proxP'</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-number">0</span></span><span class="hs-special">,</span><span class="annot"><span class="hs-number">0</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(Coord -&gt; Coord) -&gt; [Coord] -&gt; [Coord]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">\</span><span class="hs-special">(</span><span id="local-6989586621679052228"><span class="annot"><span class="annottext">x :: Float
+</span><a href="#local-6989586621679052228"><span class="hs-identifier hs-var">x</span></a></span></span><span class="hs-special">,</span><span id="local-6989586621679052227"><span class="annot"><span class="annottext">y :: Float
+</span><a href="#local-6989586621679052227"><span class="hs-identifier hs-var">y</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052228"><span class="hs-identifier hs-var">x</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span class="annot"><span class="hs-number">260</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Float
+</span><a href="#local-6989586621679052227"><span class="hs-identifier hs-var">y</span></a></span><span class="annot"><span class="annottext">Float -&gt; Float -&gt; Float
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span class="annot"><span class="hs-number">190</span></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Peca -&gt; [Coord]
+</span><a href="Database.html#blocosPeca"><span class="hs-identifier hs-var hs-var">blocosPeca</span></a></span><span> </span><span class="annot"><span class="annottext">Peca
+</span><a href="#local-6989586621679052230"><span class="hs-identifier hs-var">proxP'</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><span id="line-80"></span><span>        </span><span id="local-6989586621679052230"><span class="annot"><span class="annottext">proxP' :: Peca
+</span><a href="#local-6989586621679052230"><span class="hs-identifier hs-var hs-var">proxP'</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Tetramino -&gt; Peca
+</span><a href="Database.html#criaPeca"><span class="hs-identifier hs-var">criaPeca</span></a></span><span> </span><span class="annot"><span class="annottext">(Tetramino -&gt; Peca) -&gt; Tetramino -&gt; Peca
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">[Tetramino] -&gt; Tetramino
+forall a. [a] -&gt; a
+</span><span class="hs-identifier hs-var">head</span></span><span> </span><span class="annot"><span class="annottext">([Tetramino] -&gt; Tetramino) -&gt; [Tetramino] -&gt; Tetramino
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Mundo -&gt; [Tetramino]
+</span><a href="Database.html#proxPecas"><span class="hs-identifier hs-var hs-var">proxPecas</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052237"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><span id="line-81"></span><span>        </span><span id="local-6989586621679052232"><span class="annot"><span class="annottext">pont :: String
+</span><a href="#local-6989586621679052232"><span class="hs-identifier hs-var hs-var">pont</span></a></span></span><span>   </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-string">&quot;Pontuacao: &quot;</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; String
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; String
+forall a. Show a =&gt; a -&gt; String
+</span><span class="hs-identifier hs-var">show</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Mundo -&gt; Int
+</span><a href="Database.html#pontuacao"><span class="hs-identifier hs-var hs-var">pontuacao</span></a></span><span> </span><span class="annot"><span class="annottext">Mundo
+</span><a href="#local-6989586621679052237"><span class="hs-identifier hs-var">m</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-82"></span><span>
+</span><span id="line-83"></span><span>
+</span><span id="line-84"></span></pre></body></html>
