@@ -29,12 +29,12 @@ version :: Version
 version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
-bindir     = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\tetris_i\\tetris_i\\.stack-work\\install\\43f37ca4\\bin"
-libdir     = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\tetris_i\\tetris_i\\.stack-work\\install\\43f37ca4\\lib\\x86_64-windows-ghc-8.8.4\\ProjetoFinal-0.1.0.0-9ar4e4nGWbU9T6ky0Rvk3J-ProjetoFinal"
-dynlibdir  = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\tetris_i\\tetris_i\\.stack-work\\install\\43f37ca4\\lib\\x86_64-windows-ghc-8.8.4"
-datadir    = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\tetris_i\\tetris_i\\.stack-work\\install\\43f37ca4\\share\\x86_64-windows-ghc-8.8.4\\ProjetoFinal-0.1.0.0"
-libexecdir = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\tetris_i\\tetris_i\\.stack-work\\install\\43f37ca4\\libexec\\x86_64-windows-ghc-8.8.4\\ProjetoFinal-0.1.0.0"
-sysconfdir = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\tetris_i\\tetris_i\\.stack-work\\install\\43f37ca4\\etc"
+bindir     = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Haskell\\tetris_i\\tetris_i\\.stack-work\\install\\43f37ca4\\bin"
+libdir     = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Haskell\\tetris_i\\tetris_i\\.stack-work\\install\\43f37ca4\\lib\\x86_64-windows-ghc-8.8.4\\ProjetoFinal-0.1.0.0-9ar4e4nGWbU9T6ky0Rvk3J-ProjetoFinal"
+dynlibdir  = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Haskell\\tetris_i\\tetris_i\\.stack-work\\install\\43f37ca4\\lib\\x86_64-windows-ghc-8.8.4"
+datadir    = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Haskell\\tetris_i\\tetris_i\\.stack-work\\install\\43f37ca4\\share\\x86_64-windows-ghc-8.8.4\\ProjetoFinal-0.1.0.0"
+libexecdir = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Haskell\\tetris_i\\tetris_i\\.stack-work\\install\\43f37ca4\\libexec\\x86_64-windows-ghc-8.8.4\\ProjetoFinal-0.1.0.0"
+sysconfdir = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Haskell\\tetris_i\\tetris_i\\.stack-work\\install\\43f37ca4\\etc"
 
 getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
 getBinDir = catchIO (getEnv "ProjetoFinal_bindir") (\_ -> return bindir)

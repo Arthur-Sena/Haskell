@@ -29,4 +29,5 @@ executable tradutor
                        -Wmissing-home-modules
                        -Wpartial-fields
                        -Wredundant-constraints
-  other-modules:       tradutor
+  other-modules:       Tradutor 
+                       , Dicionario
