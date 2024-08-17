@@ -32,15 +32,25 @@ validEntrada tabuleiro (line, col, num)
         return False
     | otherwise = return True
 
+--validarJogada :: Sudoku -> Int -> Coord -> Bool
+--validarJogada tabuleiro num (linha, col) =
+--    notElem num (tabuleiro !! linha) &&
+--    notElem num [tabuleiro !! x !! col | x <- [0..8]] &&
+--    notElem num [tabuleiro !! x !! y | x <- boxLinhas, y <- boxColunas]
+--  where
+--    boxInicio x = 3 * (x `div` 3)
+--    boxLinhas = [boxInicio linha .. boxInicio linha + 2]
+--    boxColunas = [boxInicio col .. boxInicio col + 2]
+
 validarJogada :: Sudoku -> Int -> Coord -> Bool
-validarJogada tabuleiro num (linha, col) =
-    notElem num (tabuleiro !! linha) &&
-    notElem num [tabuleiro !! x !! col | x <- [0..8]] &&
-    notElem num [tabuleiro !! x !! y | x <- boxLinhas, y <- boxColunas]
+validarJogada board num (row, col) =
+    notElem num (board !! row) &&
+    notElem num [board !! r !! col | r <- [0..8]] &&
+    notElem num [board !! r !! c | r <- boxRows, c <- boxCols]
   where
-    boxInicio x = 3 * (x `div` 3)
-    boxLinhas = [boxInicio linha .. boxInicio linha + 2]
-    boxColunas = [boxInicio col .. boxInicio col + 2]
+    boxStart x = 3 * (x `div` 3)
+    boxRows = [boxStart row .. boxStart row + 2]
+    boxCols = [boxStart col .. boxStart col + 2]
 
 validTabuleiroCompleto :: Sudoku -> Bool
 validTabuleiroCompleto sudoku = all (/= 0) (concat sudoku)

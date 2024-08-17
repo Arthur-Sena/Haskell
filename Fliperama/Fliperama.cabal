@@ -1,0 +1,57 @@
+cabal-version:       2.2
+
+name:                Fliperama
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/githubuser/Fliperama#readme
+license:             BSD-3-Clause
+license-file:        LICENSE
+author:              Arthur Sena
+maintainer:          arthur.sena@aluno.ufabc.edu.br
+copyright:           2024 Arthur Sena
+category:            Web
+build-type:          Simple
+extra-source-files:  README.md
+                     CHANGELOG.md
+
+executable Fliperama
+  hs-source-dirs:      src
+  main-is:             Main.hs
+  default-language:    Haskell2010
+  build-depends:       base >= 4.7 && < 5
+                      , random
+                      , containers
+                      , QuickCheck >=2.14
+  ghc-options:         -Wall
+                       -Wcompat
+                       -Widentities
+                       -Wincomplete-record-updates
+                       -Wincomplete-uni-patterns
+                       -Wmissing-export-lists
+                       -Wmissing-home-modules
+                       -Wpartial-fields
+                       -Wredundant-constraints
+  other-modules:  Tipos
+                  , JogoDaVelha.Main
+                  , JogoDaVelha.Resultados
+                  , JogoDaVelha.Jogada
+                  , Sudoku.Main
+                  , Sudoku.Validacao
+                  , Sudoku.Sudoku
+
+test-suite fliperama-test
+  hs-source-dirs:      test
+                      , src
+  main-is:             Testes.hs
+  other-modules:      Tipos
+                      , JogoDaVelha.Resultados
+                      , JogoDaVelha.Jogada
+                      , Sudoku.Validacao
+                      , Sudoku.Sudoku
+  type:                exitcode-stdio-1.0
+  build-depends:       base >= 4.7 && < 5
+                      , random
+                      , containers
+                      , QuickCheck
+  default-language:    Haskell2010

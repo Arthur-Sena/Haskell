@@ -57,7 +57,9 @@ sudokuLoop tabuleiro = do
                         then do
                             putStrLn "Revelando solução..."
                             resolucao <- solucionarSudoku tabuleiro
-                            showTabuleiro resolucao
+                            case resolucao of
+                                Just filledBoard -> showTabuleiro filledBoard
+                                Nothing -> putStrLn "Não foi possível revelar a solução."
                             mainMenu
                         else do
                             valid <- validEntrada tabuleiro (x, y, v)
@@ -71,3 +73,5 @@ main :: IO ()
 main = do
     putStrLn "Bem-vindo ao Sudoku!" 
     mainMenu
+
+--Melhoria: Limitar o número de ajuda (Quando o pc joga muito acaba chegando num ponto q nao tem solução)
