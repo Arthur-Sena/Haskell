@@ -27,6 +27,28 @@ sudokuGenerator qntCasasPreenchidas = do
         ++ drop (col + 1) (tabuleiro !! linha)
         ] ++ drop (linha + 1) tabuleiro
 
+salvarJogada :: Sudoku -> Jogada -> Sudoku
+salvarJogada tabuleiro (line, col, val) =
+    take line tabuleiro 
+    ++ [
+        take col (tabuleiro !! line) 
+        ++ [val] 
+        ++ drop (col + 1) (tabuleiro !! line)
+        ] ++ drop (line + 1) tabuleiro
+
+showTabuleiro :: Sudoku -> IO ()
+showTabuleiro tabuleiro = do
+    putStrLn "    1 2 3 | 4 5 6 | 7 8 9"
+    putStrLn "   -----------------------"
+    mapM_ putStrLn $ formatarSudoku 1 tabuleiro
+  where
+    formatarSudoku _ [] = []
+    formatarSudoku n (x:xs) =
+        (show n ++ " " ++ concatMap separadorQuadrante (zip [1..] x)) : separadorDeLinha ++ formatarSudoku (n + 1) xs
+      where
+        separadorDeLinha = if n `mod` 3 == 0 && not (null xs) then ["   ---------------------"] else []
+        separadorQuadrante (i, x') = (if (i-1) `mod` 3 == 0 then "| " else "") ++ (if x' == 0 then ". " else show x' ++ " ")
+
 preencheTabuleiro :: Sudoku -> IO (Maybe Sudoku)
 preencheTabuleiro tabuleiro = preencheTabuleiro' tabuleiro (0, 0)
   where
@@ -45,20 +67,20 @@ preencheTabuleiro tabuleiro = preencheTabuleiro' tabuleiro (0, 0)
             Just b  -> return (Just b)
             Nothing -> tentativa xs
 
-preenchendoTabuleiro' :: Sudoku -> Coord -> Maybe Sudoku
-preenchendoTabuleiro' tabuleiro (9, _) = Just tabuleiro
-preenchendoTabuleiro' tabuleiro (line, 9) = preenchendoTabuleiro' tabuleiro (line + 1, 0)
-preenchendoTabuleiro' tabuleiro (line, col)
-    | tabuleiro !! line !! col /= 0 = preenchendoTabuleiro' tabuleiro (line, col + 1)
-    | otherwise = tryNum [1..9]
+preenchendoTabuleiro :: Sudoku -> Maybe SudokuBoard
+preenchendoTabuleiro sudoku = preenche' sudoku (0, 0)
   where
-    tryNum [] = Nothing
-    tryNum (x:xs)
-        | validarJogada tabuleiro x (line, col) =
-            case preenchendoTabuleiro' (salvarJogada tabuleiro (line, col, x)) (line, col + 1) of
-                Just b -> Just b
-                Nothing -> tryNum xs
-        | otherwise = tryNum xs
+    preenche' b (9, _) = Just (SudokuBoard b) -- Se chegar na última linha, retorna tabuleiro
+    preenche' b (line, 9) = preenche' b (line + 1, 0) -- Avança pra próxima linha
+    preenche' b (line, col)
+        | b !! line !! col /= 0 = preenche' b (line, col + 1) -- Se a célula já estiver preenchida, avança
+        | otherwise = foldr tryMove Nothing [1..9]
+      where
+        tryMove n acc
+            | validarJogada b n (line, col) = case preenche' (salvarJogada b (line, col, n)) (line, col + 1) of
+                Just filledBoard -> Just filledBoard
+                Nothing -> acc
+            | otherwise = acc
 
 buscaPosicaoVazia :: Sudoku -> Maybe Coord
 buscaPosicaoVazia sudoku = findIndex' sudoku 0 0
@@ -69,16 +91,6 @@ buscaPosicaoVazia sudoku = findIndex' sudoku 0 0
       | (x !! col) == 0 = Just (line, col)
       | otherwise = findIndex' (x:xs) line (col + 1)
 
-salvarJogada :: Sudoku -> Jogada -> Sudoku
-salvarJogada tabuleiro (line, col, val) =
-    take line tabuleiro 
-    ++ [
-        take col (tabuleiro !! line) 
-        ++ [val] 
-        ++ drop (col + 1) (tabuleiro !! line)
-        ] ++ drop (line + 1) tabuleiro
-
-
 jogadaComputador :: Sudoku -> IO Sudoku
 jogadaComputador sudoku = do
     let Just (line, col) = buscaPosicaoVazia sudoku
@@ -86,22 +98,8 @@ jogadaComputador sudoku = do
     let num = head numValido -- Pega o primeiro número válido
     return $ salvarJogada sudoku (line, col, num)
 
-solucionarSudoku :: Sudoku -> IO Sudoku
+solucionarSudoku :: Sudoku -> IO (Maybe Sudoku)
 solucionarSudoku sudoku = do
-    let mSudoku = preenchendoTabuleiro' sudoku (0, 0)
-    case mSudoku of
-        Just completo -> return completo
-        Nothing -> error "Erro ao tentar completar o tabuleiro"
-
-showTabuleiro :: Sudoku -> IO ()
-showTabuleiro tabuleiro = do
-    putStrLn "    1 2 3 | 4 5 6 | 7 8 9"
-    putStrLn "   -----------------------"
-    mapM_ putStrLn $ formatarSudoku 1 tabuleiro
-  where
-    formatarSudoku _ [] = []
-    formatarSudoku n (x:xs) =
-        (show n ++ " " ++ concatMap separadorQuadrante (zip [1..] x)) : separadorDeLinha ++ formatarSudoku (n + 1) xs
-      where
-        separadorDeLinha = if n `mod` 3 == 0 && not (null xs) then ["   ---------------------"] else []
-        separadorQuadrante (i, x') = (if (i-1) `mod` 3 == 0 then "| " else "") ++ (if x' == 0 then ". " else show x' ++ " ")
+    case preenchendoTabuleiro sudoku of
+        Just (SudokuBoard filledBoard) -> return (Just filledBoard)
+        Nothing -> return Nothing
