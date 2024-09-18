@@ -123,7 +123,7 @@
 #endif /* MIN_TOOL_VERSION_runghc */
 
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "Fliperama-0.1.0.0-JzJ0pPaxvnuFwmn8xRaxHq-Fliperama"
+#define CURRENT_COMPONENT_ID "Fliperama-0.1.0.0-DMjpEMZafoBJieASwNJzrO-Fliperama"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.1.0.0"

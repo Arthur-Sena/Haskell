@@ -46,12 +46,12 @@ getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: 
 
 
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
-bindir     = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Fliperama\\.stack-work\\install\\9e0cd55c\\bin"
-libdir     = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Fliperama\\.stack-work\\install\\9e0cd55c\\lib\\x86_64-windows-ghc-9.6.6\\Fliperama-0.1.0.0-JzJ0pPaxvnuFwmn8xRaxHq-Fliperama"
-dynlibdir  = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Fliperama\\.stack-work\\install\\9e0cd55c\\lib\\x86_64-windows-ghc-9.6.6"
-datadir    = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Fliperama\\.stack-work\\install\\9e0cd55c\\share\\x86_64-windows-ghc-9.6.6\\Fliperama-0.1.0.0"
-libexecdir = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Fliperama\\.stack-work\\install\\9e0cd55c\\libexec\\x86_64-windows-ghc-9.6.6\\Fliperama-0.1.0.0"
-sysconfdir = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Fliperama\\.stack-work\\install\\9e0cd55c\\etc"
+bindir     = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Haskell\\Fliperama\\.stack-work\\install\\9e0cd55c\\bin"
+libdir     = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Haskell\\Fliperama\\.stack-work\\install\\9e0cd55c\\lib\\x86_64-windows-ghc-9.6.6\\Fliperama-0.1.0.0-DMjpEMZafoBJieASwNJzrO-Fliperama"
+dynlibdir  = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Haskell\\Fliperama\\.stack-work\\install\\9e0cd55c\\lib\\x86_64-windows-ghc-9.6.6"
+datadir    = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Haskell\\Fliperama\\.stack-work\\install\\9e0cd55c\\share\\x86_64-windows-ghc-9.6.6\\Fliperama-0.1.0.0"
+libexecdir = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Haskell\\Fliperama\\.stack-work\\install\\9e0cd55c\\libexec\\x86_64-windows-ghc-9.6.6\\Fliperama-0.1.0.0"
+sysconfdir = "C:\\Users\\arthu\\OneDrive\\Documentos\\Dev\\Haskel\\Haskell\\Fliperama\\.stack-work\\install\\9e0cd55c\\etc"
 
 getBinDir     = catchIO (getEnv "Fliperama_bindir")     (\_ -> return bindir)
 getLibDir     = catchIO (getEnv "Fliperama_libdir")     (\_ -> return libdir)
